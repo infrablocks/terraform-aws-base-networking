@@ -5,15 +5,18 @@ require 'support/awspec'
 
 require 'support/shared_contexts/terraform'
 
+require 'netaddr'
+
 require_relative '../lib/terraform'
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = '.rspec_status'
 
-  config.add_setting :region, default: 'eu-west-2'
   config.add_setting :vpc_cidr, default: "10.1.0.0/16"
-  config.add_setting :component, default: 'integration-tests'
+  config.add_setting :region, default: 'eu-west-2'
+  config.add_setting :availability_zones, default: 'eu-west-2a,eu-west-2b'
 
+  config.add_setting :component, default: 'integration-tests'
   config.add_setting :deployment_identifier, default: SecureRandom.hex[0, 8]
 
   config.before(:suite) do
@@ -26,8 +29,9 @@ RSpec.configure do |config|
 
     Terraform.clean
     Terraform.apply(directory: configuration_directory, vars: {
-        region: variables.region,
         vpc_cidr: variables.vpc_cidr,
+        region: variables.region,
+        availability_zones: variables.availability_zones,
         component: variables.component,
         deployment_identifier: variables.deployment_identifier
     })
@@ -45,8 +49,9 @@ RSpec.configure do |config|
 
     Terraform.clean
     Terraform.destroy(directory: configuration_directory, vars: {
-        region: variables.region,
         vpc_cidr: variables.vpc_cidr,
+        region: variables.region,
+        availability_zones: variables.availability_zones,
         component: variables.component,
         deployment_identifier: variables.deployment_identifier
     })
