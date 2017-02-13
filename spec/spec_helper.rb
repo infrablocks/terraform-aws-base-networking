@@ -1,5 +1,7 @@
 require 'bundler/setup'
+
 require 'awspec'
+require 'support/awspec'
 
 require 'support/shared_contexts/terraform'
 
@@ -14,7 +16,7 @@ RSpec.configure do |config|
 
   config.add_setting :deployment_identifier, default: SecureRandom.hex[0, 8]
 
-  config.before(:all) do
+  config.before(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('src')
 
@@ -33,7 +35,7 @@ RSpec.configure do |config|
     puts
   end
 
-  config.after(:all) do
+  config.after(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('src')
 
