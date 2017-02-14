@@ -5,3 +5,19 @@ output "vpc_id" {
 output "vpc_cidr" {
   value = "${aws_vpc.base.cidr_block}"
 }
+
+output "availability_zones" {
+  value = "${var.availability_zones}"
+}
+
+output "number_of_availability_zones" {
+  value = "${length(split(",",var.availability_zones))}"
+}
+
+output "public_subnet_ids" {
+  value = "${join(",", aws_subnet.public.*.id)}"
+}
+
+output "public_subnet_cidr_blocks" {
+  value = "${join(",", aws_subnet.public.*.cidr_block)}"
+}

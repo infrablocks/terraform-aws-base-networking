@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'public subnets' do
+describe 'Public' do
   include_context :terraform
 
   let :created_vpc do
@@ -59,6 +59,36 @@ describe 'public subnets' do
       end
 
       expect(public_subnets.map(&:cidr_block).uniq.length).to(eq(public_subnets.length))
+    end
+
+    it 'exposes the availability zones as an output' do
+      expected_availability_zones = variables.availability_zones
+      actual_availability_zones = Terraform.output(name: 'availability_zones')
+
+      expect(actual_availability_zones).to(eq(expected_availability_zones))
+    end
+
+    it 'exposes the number of availability zones as an output' do
+      expected_count = variables.availability_zones.split(',').count.to_s
+      actual_count = Terraform.output(name: 'number_of_availability_zones')
+
+      expect(actual_count).to(eq(expected_count))
+    end
+
+    it 'exposes the public subnet IDs as an output' do
+      expected_public_subnet_ids = public_subnets.map(&:id).join(',')
+      actual_public_subnet_ids = Terraform.output(
+          name: 'public_subnet_ids')
+
+      expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
+    end
+
+    it 'exposes the public subnet CIDR blocks as an output' do
+      expected_public_subnet_ids = public_subnets.map(&:cidr_block).join(',')
+      actual_public_subnet_ids = Terraform.output(
+          name: 'public_subnet_cidr_blocks')
+
+      expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
   end
 
