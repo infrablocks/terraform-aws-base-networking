@@ -61,20 +61,6 @@ describe 'Public' do
       expect(public_subnets.map(&:cidr_block).uniq.length).to(eq(public_subnets.length))
     end
 
-    it 'exposes the availability zones as an output' do
-      expected_availability_zones = variables.availability_zones
-      actual_availability_zones = Terraform.output(name: 'availability_zones')
-
-      expect(actual_availability_zones).to(eq(expected_availability_zones))
-    end
-
-    it 'exposes the number of availability zones as an output' do
-      expected_count = variables.availability_zones.split(',').count.to_s
-      actual_count = Terraform.output(name: 'number_of_availability_zones')
-
-      expect(actual_count).to(eq(expected_count))
-    end
-
     it 'exposes the public subnet IDs as an output' do
       expected_public_subnet_ids = public_subnets.map(&:id).join(',')
       actual_public_subnet_ids = Terraform.output(
