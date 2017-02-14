@@ -100,3 +100,12 @@ eval "$(direnv hook $SHELL)"
 
 direnv allow <repository-directory>
 ```
+
+Development Tasks
+-----------------
+
+To generate an SSH key pair:
+
+```
+ssh-keygen -t rsa -b 4096 -C integration-test@example.com -N '' -f config/secrets/keys/bastion/ssh
+```
