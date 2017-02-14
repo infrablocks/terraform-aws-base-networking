@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'IGW creation' do
+describe 'IGW' do
   include_context :terraform
 
   subject { igw("igw-#{variables.component}-#{variables.deployment_identifier}") }

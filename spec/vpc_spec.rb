@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'VPC creation' do
+describe 'VPC' do
   include_context :terraform
 
   subject { vpc("vpc-#{variables.component}-#{variables.deployment_identifier}") }
