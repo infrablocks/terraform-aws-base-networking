@@ -9,6 +9,10 @@ resource "aws_instance" "bastion" {
   key_name = "${aws_key_pair.bastion.key_name}"
   subnet_id = "${aws_subnet.public.0.id}"
 
+  vpc_security_group_ids = [
+    "${aws_security_group.bastion.id}"
+  ]
+
   tags {
     Name = "bastion-${var.component}-${var.deployment_identifier}"
     Component = "${var.component}"
@@ -38,6 +42,8 @@ resource "aws_security_group" "bastion" {
 
   tags {
     Name = "bastion-sg-${var.component}-${var.deployment_identifier}"
+    Component = "${var.component}"
+    DeploymentIdentifier = "${var.deployment_identifier}"
   }
 
   ingress {

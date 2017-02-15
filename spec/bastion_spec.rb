@@ -50,8 +50,23 @@ describe 'Bastion' do
 
   context 'security group' do
     it 'exists' do expect(bastion_security_group).to(exist) end
+
+    it 'has Component tag' do
+      expect(bastion_security_group)
+          .to(have_tag('Component').value(component))
+    end
+
+    it 'has DeploymentIdentifier tag' do
+      expect(bastion_security_group)
+          .to(have_tag('DeploymentIdentifier').value(dep_id))
+    end
+
     it 'is associated with the created VPC' do
       expect(bastion_security_group.vpc_id).to(eq(created_vpc.id))
+    end
+
+    it 'is associated with the bastion' do
+      expect(subject).to(have_security_group("bastion-#{component}-#{dep_id}"))
     end
 
     it 'allows inbound SSH for each supplied CIDR' do
