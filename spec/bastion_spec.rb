@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'net/ssh'
 
 describe 'Bastion' do
   include_context :terraform
@@ -92,6 +93,21 @@ describe 'Bastion' do
       expect(egress_rule.to_port).to(eq(22))
       expect(egress_rule.ip_protocol).to(eq('tcp'))
       expect(egress_rule.ip_ranges.map(&:cidr_ip)).to(eq([variables.vpc_cidr]))
+    end
+  end
+
+  context 'connectivity' do
+    it 'is reachable using the corresponding private SSH key' do
+      expect {
+        ssh = Net::SSH.start(
+            "bastion-#{component}-#{dep_id}.#{domain_name}",
+            user = variables.bastion_user,
+            options = {
+                keys: variables.bastion_ssh_private_key_path
+            })
+        ssh.exec!('ls -al')
+        ssh.close
+      }.not_to raise_error
     end
   end
 

@@ -33,6 +33,9 @@ RSpec.configure do |config|
   config.add_setting :domain_name, default: 'greasedscone.uk'
   config.add_setting :public_zone_id, default: 'Z2WA5EVJBZSQ3V'
 
+  config.add_setting :bastion_user, default: 'centos'
+  config.add_setting :bastion_ssh_private_key_path, default: 'config/secrets/keys/bastion/ssh.private'
+
   config.before(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('src')
