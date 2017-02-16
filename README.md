@@ -70,6 +70,7 @@ Executing `terraform get` will fetch the module.
 | private_subnet_ids           | The IDs of the private subnets                       |
 | private_subnet_cidrs         | The CIDRs of the private subnets                     |
 | bastion_public_ip            | The EIP attached to the bastion                      |
+| nat_public_ip                | The EIP attached to the NAT                          |
 
 
 Development
