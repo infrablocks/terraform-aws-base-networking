@@ -89,19 +89,12 @@ development machine:
 
 #### Mac OS X Setup
 
-Installing the required tools is best managed by [homebrew](http://brew.sh) and
-[homebrew-cask](http://caskroom.io).
+Installing the required tools is best managed by [homebrew](http://brew.sh).
 
 To install homebrew:
 
 ```
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-To install homebrew-cask:
-
-```
-brew tap caskroom/cask
 ```
 
 Then, to install the required tools:
@@ -117,10 +110,6 @@ rbenv install 2.3.1
 rbenv rehash
 rbenv local 2.3.1
 gem install bundler
-
-# docker
-brew cask install docker
-# at this point start the docker app and give it permission to start up
 
 # git, git-crypt, gnupg
 brew install git
@@ -168,7 +157,9 @@ ssh-keygen -t rsa -b 4096 -C integration-test@example.com -N '' -f config/secret
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/tobyclemson/rake_dependencies. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/tobyclemson/terraform-aws-base-networking. 
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
+the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 License
