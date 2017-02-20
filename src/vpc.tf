@@ -8,3 +8,8 @@ resource "aws_vpc" "base" {
     DeploymentIdentifier = "${var.deployment_identifier}"
   }
 }
+
+resource "aws_route53_zone_association" "base" {
+  zone_id = "${var.private_zone_id}"
+  vpc_id = "${aws_vpc.base.id}"
+}

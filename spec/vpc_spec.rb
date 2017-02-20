@@ -5,6 +5,10 @@ describe 'VPC' do
 
   subject { vpc("vpc-#{variables.component}-#{variables.deployment_identifier}") }
 
+  let :private_hosted_zone do
+    route53_client.get_hosted_zone({id: variables.private_zone_id})
+  end
+
   it { should exist }
   it { should have_tag('Component').value(variables.component) }
   it { should have_tag('DeploymentIdentifier').value(variables.deployment_identifier) }
@@ -44,5 +48,9 @@ describe 'VPC' do
     actual_count = Terraform.output(name: 'number_of_availability_zones')
 
     expect(actual_count).to(eq(expected_count))
+  end
+
+  it 'associates the supplied private hosted with the VPC' do
+    expect(private_hosted_zone.vp_cs.map(&:vpc_id)).to(include(subject.id))
   end
 end

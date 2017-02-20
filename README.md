@@ -35,6 +35,7 @@ module "base-network" {
   
   domain_name = "example.com"
   public_zone_id = "Z1WA3EVJBXSQ2V"
+  private_zone_id = "Z3CVA9QD5NHSW3"
 }
 ```
 
@@ -55,6 +56,7 @@ Executing `terraform get` will fetch the module.
 | bastion_ssh_allow_cidrs     | The CIDRs from which the bastion is reachable     | -       | yes      |
 | domain_name                 | The domain name of the supplied Route 53 zone     | -       | yes      |
 | public_zone_id              | The ID of the public Route 53 zone                | -       | yes      |
+| private_zone_id             | The ID of the private Route 53 zone               | -       | yes      |
 
 
 ### Outputs

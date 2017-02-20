@@ -34,6 +34,7 @@ RSpec.configure do |config|
 
   config.add_setting :domain_name, default: 'greasedscone.uk'
   config.add_setting :public_zone_id, default: 'Z2WA5EVJBZSQ3V'
+  config.add_setting :private_zone_id, default: 'Z2BVA9QD5NHSW6'
 
   config.add_setting :bastion_user, default: 'centos'
   config.add_setting :bastion_ssh_private_key_path, default: 'config/secrets/keys/bastion/ssh.private'
@@ -60,7 +61,8 @@ RSpec.configure do |config|
         bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
         domain_name: variables.domain_name,
-        public_zone_id: variables.public_zone_id
+        public_zone_id: variables.public_zone_id,
+        private_zone_id: variables.private_zone_id
     })
 
     puts
@@ -89,7 +91,8 @@ RSpec.configure do |config|
           bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
           domain_name: variables.domain_name,
-          public_zone_id: variables.public_zone_id
+          public_zone_id: variables.public_zone_id,
+          private_zone_id: variables.private_zone_id
       })
 
       puts

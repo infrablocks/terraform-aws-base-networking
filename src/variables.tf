@@ -11,3 +11,4 @@ variable "bastion_ssh_allow_cidrs" {}
 
 variable "domain_name" {}
 variable "public_zone_id" {}
+variable "private_zone_id" {}
