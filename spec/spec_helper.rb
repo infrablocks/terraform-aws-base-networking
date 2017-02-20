@@ -11,7 +11,7 @@ require 'open-uri'
 require_relative '../lib/terraform'
 
 RSpec.configure do |config|
-  persist_between_runs = ENV['PERSIST_BETWEEN_RUNS']
+  deployment_identifier = ENV['DEPLOYMENT_IDENTIFIER']
   safe_ip_cidr = '86.53.244.42/32'
 
   def current_public_ip_cidr
@@ -26,7 +26,7 @@ RSpec.configure do |config|
 
   config.add_setting :component, default: 'integration-tests'
   config.add_setting :deployment_identifier,
-      default: persist_between_runs ? 'persistent-for-realz' : SecureRandom.hex[0, 8]
+      default: deployment_identifier || SecureRandom.hex[0, 8]
 
   config.add_setting :bastion_ami, default: 'ami-bb373ddf'
   config.add_setting :bastion_ssh_public_key_path, default: 'config/secrets/keys/bastion/ssh.public'
@@ -67,7 +67,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    unless persist_between_runs
+    unless deployment_identifier
       variables = RSpec.configuration
       configuration_directory = Paths.from_project_root_directory('src')
 
