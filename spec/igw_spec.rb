@@ -3,15 +3,18 @@ require 'spec_helper'
 describe 'IGW' do
   include_context :terraform
 
-  subject { igw("igw-#{variables.component}-#{variables.deployment_identifier}") }
+  let(:component) { RSpec.configuration.component }
+  let(:dep_id) { RSpec.configuration.deployment_identifier }
+
+  subject { igw("igw-#{component}-#{dep_id}") }
 
   it { should exist }
-  it { should have_tag('Component').value(variables.component) }
-  it { should have_tag('DeploymentIdentifier').value(variables.deployment_identifier) }
+  it { should have_tag('Component').value(component) }
+  it { should have_tag('DeploymentIdentifier').value(dep_id) }
   it { should have_tag('Tier').value('public') }
 
   it 'is attached to the created VPC' do
-    vpc_igw = vpc("vpc-#{variables.component}-#{variables.deployment_identifier}")
+    vpc_igw = vpc("vpc-#{component}-#{dep_id}")
         .internet_gateways.first
 
     expect(subject.internet_gateway_id)

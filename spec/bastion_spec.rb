@@ -4,9 +4,19 @@ require 'net/ssh'
 describe 'Bastion' do
   include_context :terraform
 
-  let(:component) { variables.component }
-  let(:dep_id) { variables.deployment_identifier }
-  let(:domain_name) { variables.domain_name }
+  let(:component) { RSpec.configuration.component }
+  let(:dep_id) { RSpec.configuration.deployment_identifier }
+
+  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
+  let(:availability_zones) { RSpec.configuration.availability_zones }
+
+  let(:bastion_ami) { RSpec.configuration.bastion_ami }
+  let(:bastion_user) { RSpec.configuration.bastion_user }
+  let(:bastion_ssh_allow_cidrs) { RSpec.configuration.bastion_ssh_allow_cidrs }
+  let(:bastion_ssh_private_key_path) { RSpec.configuration.bastion_ssh_private_key_path }
+
+  let(:domain_name) { RSpec.configuration.domain_name }
+  let(:public_zone_id) { RSpec.configuration.public_zone_id }
 
   subject { ec2("bastion-#{component}-#{dep_id}") }
 
@@ -15,7 +25,7 @@ describe 'Bastion' do
   end
 
   let :first_public_subnet do
-    zone = variables.availability_zones.split(',').first
+    zone = availability_zones.split(',').first
     subnet("public-subnet-#{component}-#{dep_id}-#{zone}")
   end
 
@@ -26,7 +36,7 @@ describe 'Bastion' do
   it { should exist }
   it { should belong_to_vpc("vpc-#{component}-#{dep_id}")}
   its(:subnet_id) { should eq(first_public_subnet.id) }
-  its(:image_id) { should eq(variables.bastion_ami) }
+  its(:image_id) { should eq(bastion_ami) }
   its(:instance_type) { should eq('t2.micro') }
 
   its(:key_name) { should eq("bastion-#{component}-#{dep_id}") }
@@ -42,7 +52,7 @@ describe 'Bastion' do
 
   it 'creates a public DNS entry for the bastion' do
     public_ip = bastion_public_ip_output
-    zone = route53_hosted_zone(variables.public_zone_id)
+    zone = route53_hosted_zone(public_zone_id)
     expect(zone)
         .to(have_record_set("bastion-#{component}-#{dep_id}.#{domain_name}.")
                 .a(public_ip)
@@ -71,7 +81,7 @@ describe 'Bastion' do
     end
 
     it 'allows inbound SSH for each supplied CIDR' do
-      allowed_cidrs = variables.bastion_ssh_allow_cidrs.split(',')
+      allowed_cidrs = bastion_ssh_allow_cidrs.split(',')
       allowed_cidrs.each do |cidr|
         ingress_rule = bastion_security_group.ip_permissions.find do |perm|
           perm.ip_ranges.map(&:cidr_ip).include?(cidr)
@@ -92,7 +102,7 @@ describe 'Bastion' do
       expect(egress_rule.from_port).to(eq(22))
       expect(egress_rule.to_port).to(eq(22))
       expect(egress_rule.ip_protocol).to(eq('tcp'))
-      expect(egress_rule.ip_ranges.map(&:cidr_ip)).to(eq([variables.vpc_cidr]))
+      expect(egress_rule.ip_ranges.map(&:cidr_ip)).to(eq([vpc_cidr]))
     end
   end
 
@@ -101,9 +111,9 @@ describe 'Bastion' do
       expect {
         ssh = Net::SSH.start(
             "bastion-#{component}-#{dep_id}.#{domain_name}",
-            user = variables.bastion_user,
+            user = bastion_user,
             options = {
-                keys: variables.bastion_ssh_private_key_path
+                keys: bastion_ssh_private_key_path
             })
         ssh.exec!('ls -al')
         ssh.close

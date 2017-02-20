@@ -3,12 +3,17 @@ require 'spec_helper'
 describe 'NAT' do
   include_context :terraform
 
+  let(:component) { RSpec.configuration.component }
+  let(:dep_id) { RSpec.configuration.deployment_identifier }
+
+  let(:availability_zones) { RSpec.configuration.availability_zones }
+
   let :created_vpc do
-    vpc("vpc-#{variables.component}-#{variables.deployment_identifier}")
+    vpc("vpc-#{component}-#{dep_id}")
   end
   let :first_public_subnet do
-    zone = variables.availability_zones.split(',').first
-    subnet("public-subnet-#{variables.component}-#{variables.deployment_identifier}-#{zone}")
+    zone = availability_zones.split(',').first
+    subnet("public-subnet-#{component}-#{dep_id}-#{zone}")
   end
 
   subject do
@@ -24,7 +29,8 @@ describe 'NAT' do
 
   it 'associates an EIP and exposes as an output' do
     public_ip = nat_public_ip_output
-    expect(subject.nat_gateway_addresses.map(&:public_ip)).to(include(public_ip))
+    expect(subject.nat_gateway_addresses.map(&:public_ip))
+        .to(include(public_ip))
   end
 
   def nat_public_ip_output

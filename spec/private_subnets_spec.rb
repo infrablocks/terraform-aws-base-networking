@@ -3,16 +3,22 @@ require 'spec_helper'
 describe 'Private' do
   include_context :terraform
 
+  let(:component) { RSpec.configuration.component }
+  let(:dep_id) { RSpec.configuration.deployment_identifier }
+
+  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
+  let(:availability_zones) { RSpec.configuration.availability_zones }
+
   let :created_vpc do
-    vpc("vpc-#{variables.component}-#{variables.deployment_identifier}")
+    vpc("vpc-#{component}-#{dep_id}")
   end
   let :private_subnets do
-    variables.availability_zones.split(',').map do |zone|
-      subnet("private-subnet-#{variables.component}-#{variables.deployment_identifier}-#{zone}")
+    availability_zones.split(',').map do |zone|
+      subnet("private-subnet-#{component}-#{dep_id}-#{zone}")
     end
   end
   let :private_route_table do
-    route_table("private-routetable-#{variables.component}-#{variables.deployment_identifier}")
+    route_table("private-routetable-#{component}-#{dep_id}")
   end
   let :nat_gateway do
     response = ec2_client.describe_nat_gateways({
@@ -24,14 +30,14 @@ describe 'Private' do
   context 'subnets' do
     it 'has a Component tag on each subnet' do
       private_subnets.each do |subnet|
-        expect(subnet).to(have_tag('Component').value(variables.component))
+        expect(subnet).to(have_tag('Component').value(component))
       end
     end
 
     it 'has a DeploymentIdentifier tag on each subnet' do
       private_subnets.each do |subnet|
         expect(subnet).to(have_tag('DeploymentIdentifier')
-            .value(variables.deployment_identifier))
+            .value(dep_id))
       end
     end
 
@@ -49,19 +55,19 @@ describe 'Private' do
     end
 
     it 'distributes subnets across availability zones' do
-      variables.availability_zones.split(',').map do |zone|
+      availability_zones.split(',').map do |zone|
         expect(private_subnets.map(&:availability_zone)).to(include(zone))
       end
     end
 
     it 'uses unique /24 networks relative to the VPC CIDR for each subnet' do
-      vpc_cidr = NetAddr::CIDR.create(variables.vpc_cidr)
+      cidr = NetAddr::CIDR.create(vpc_cidr)
 
       private_subnets.each do |subnet|
         subnet_cidr = NetAddr::CIDR.create(subnet.cidr_block)
 
         expect(subnet_cidr.netmask).to(eq('/24'))
-        expect(vpc_cidr.contains?(subnet_cidr)).to(be(true))
+        expect(cidr.contains?(subnet_cidr)).to(be(true))
       end
 
       expect(private_subnets.map(&:cidr_block).uniq.length).to(eq(private_subnets.length))
@@ -86,12 +92,12 @@ describe 'Private' do
 
   context 'route table' do
     it 'has a Component tag' do
-      expect(private_route_table).to(have_tag('Component').value(variables.component))
+      expect(private_route_table).to(have_tag('Component').value(component))
     end
 
     it 'has a DeploymentIdentifier' do
       expect(private_route_table).to(have_tag('DeploymentIdentifier')
-          .value(variables.deployment_identifier))
+          .value(dep_id))
     end
 
     it 'has a Tier of private' do

@@ -3,17 +3,25 @@ require 'spec_helper'
 describe 'VPC' do
   include_context :terraform
 
-  subject { vpc("vpc-#{variables.component}-#{variables.deployment_identifier}") }
+  let(:component) { RSpec.configuration.component }
+  let(:dep_id) { RSpec.configuration.deployment_identifier }
+
+  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
+  let(:availability_zones) { RSpec.configuration.availability_zones }
+
+  let(:private_zone_id) { RSpec.configuration.private_zone_id }
+
+  subject { vpc("vpc-#{component}-#{dep_id}") }
 
   let :private_hosted_zone do
-    route53_client.get_hosted_zone({id: variables.private_zone_id})
+    route53_client.get_hosted_zone({id: private_zone_id})
   end
 
   it { should exist }
-  it { should have_tag('Component').value(variables.component) }
-  it { should have_tag('DeploymentIdentifier').value(variables.deployment_identifier) }
+  it { should have_tag('Component').value(component) }
+  it { should have_tag('DeploymentIdentifier').value(dep_id) }
 
-  its(:cidr_block) { should eq variables.vpc_cidr }
+  its(:cidr_block) { should eq vpc_cidr }
 
   it 'exposes the VPC ID as an output' do
     expected_vpc_id = subject.vpc_id
@@ -37,14 +45,14 @@ describe 'VPC' do
   end
 
   it 'exposes the availability zones as an output' do
-    expected_availability_zones = variables.availability_zones
+    expected_availability_zones = availability_zones
     actual_availability_zones = Terraform.output(name: 'availability_zones')
 
     expect(actual_availability_zones).to(eq(expected_availability_zones))
   end
 
   it 'exposes the number of availability zones as an output' do
-    expected_count = variables.availability_zones.split(',').count.to_s
+    expected_count = availability_zones.split(',').count.to_s
     actual_count = Terraform.output(name: 'number_of_availability_zones')
 
     expect(actual_count).to(eq(expected_count))
