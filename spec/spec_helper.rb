@@ -5,6 +5,7 @@ require 'support/awspec'
 
 require 'support/shared_contexts/terraform'
 
+require 'securerandom'
 require 'netaddr'
 require 'open-uri'
 
@@ -78,22 +79,25 @@ RSpec.configure do |config|
       puts
 
       Terraform.clean
-      Terraform.destroy(directory: configuration_directory, vars: {
-          vpc_cidr: variables.vpc_cidr,
-          region: variables.region,
-          availability_zones: variables.availability_zones,
+      Terraform.destroy(
+          directory: configuration_directory,
+          force: true,
+          vars: {
+            vpc_cidr: variables.vpc_cidr,
+            region: variables.region,
+            availability_zones: variables.availability_zones,
 
-          component: variables.component,
-          deployment_identifier: variables.deployment_identifier,
+            component: variables.component,
+            deployment_identifier: variables.deployment_identifier,
 
-          bastion_ami: variables.bastion_ami,
-          bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
-          bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
+            bastion_ami: variables.bastion_ami,
+            bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
+            bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
-          domain_name: variables.domain_name,
-          public_zone_id: variables.public_zone_id,
-          private_zone_id: variables.private_zone_id
-      })
+            domain_name: variables.domain_name,
+            public_zone_id: variables.public_zone_id,
+            private_zone_id: variables.private_zone_id
+        })
 
       puts
     end

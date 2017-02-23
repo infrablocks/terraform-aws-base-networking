@@ -63,7 +63,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    ruby-terraform (0.3.0)
+    ruby-terraform (0.4.0)
       lino (~> 1.1)
     rubyzip (1.2.1)
     term-ansicolor (1.4.0)
@@ -85,7 +85,7 @@ DEPENDENCIES
   rake (~> 11.2)
   rake-dependencies (~> 0.11)
   rspec (~> 3.0)
-  ruby-terraform (~> 0.3)
+  ruby-terraform (~> 0.4)
 
 BUNDLED WITH
-   1.14.4
+   1.14.5
