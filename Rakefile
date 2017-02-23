@@ -1,6 +1,7 @@
 require 'rspec/core/rake_task'
 require 'securerandom'
 
+require_relative 'lib/public_ip'
 require_relative 'lib/terraform'
 
 DEPLOYMENT_IDENTIFIER = SecureRandom.hex[0, 8]
