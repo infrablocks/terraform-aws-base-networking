@@ -114,5 +114,12 @@ describe 'Public' do
         expect(public_route_table).to(have_subnet(subnet.id))
       end
     end
+
+    it 'exposes the public route table as an output' do
+      public_route_table_id = Terraform.output(
+          name: 'public_route_table_id')
+
+      expect(public_route_table_id ).to(eq(public_route_table.id))
+    end
   end
 end

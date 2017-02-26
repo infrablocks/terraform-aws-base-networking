@@ -118,5 +118,12 @@ describe 'Private' do
         expect(private_route_table).to(have_subnet(subnet.id))
       end
     end
+
+    it 'exposes the private route table as an output' do
+      private_route_table_id = Terraform.output(
+          name: 'private_route_table_id')
+
+      expect(private_route_table_id ).to(eq(private_route_table.id))
+    end
   end
 end
