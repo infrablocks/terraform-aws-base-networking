@@ -52,6 +52,7 @@ Executing `terraform get` will fetch the module.
 | component                   | The component this network will contain           | -       | yes      |
 | deployment_identifier       | An identifier for this instantiation              | -       | yes      |
 | bastion_ami                 | The AMI to use for the bastion instance           | -       | yes      |
+| bastion_instance_type       | The instance type to use for the bastion instance | t2.nano | yes      |
 | bastion_ssh_public_key_path | The path to the public key to use for the bastion | -       | yes      |
 | bastion_ssh_allow_cidrs     | The CIDRs from which the bastion is reachable     | -       | yes      |
 | domain_name                 | The domain name of the supplied Route 53 zone     | -       | yes      |

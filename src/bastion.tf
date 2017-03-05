@@ -5,7 +5,7 @@ resource "aws_key_pair" "bastion" {
 
 resource "aws_instance" "bastion" {
   ami = "${var.bastion_ami}"
-  instance_type = "t2.micro"
+  instance_type = "${var.bastion_instance_type}"
   key_name = "${aws_key_pair.bastion.key_name}"
   subnet_id = "${aws_subnet.public.0.id}"
 
