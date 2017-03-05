@@ -6,6 +6,9 @@ variable "component" {}
 variable "deployment_identifier" {}
 
 variable "bastion_ami" {}
+variable "bastion_instance_type" {
+  default = "t2.nano"
+}
 variable "bastion_ssh_public_key_path" {}
 variable "bastion_ssh_allow_cidrs" {}
 

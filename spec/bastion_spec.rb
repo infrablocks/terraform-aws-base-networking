@@ -11,6 +11,7 @@ describe 'Bastion' do
   let(:availability_zones) { RSpec.configuration.availability_zones }
 
   let(:bastion_ami) { RSpec.configuration.bastion_ami }
+  let(:bastion_instance_type) { RSpec.configuration.bastion_instance_type }
   let(:bastion_user) { RSpec.configuration.bastion_user }
   let(:bastion_ssh_allow_cidrs) { RSpec.configuration.bastion_ssh_allow_cidrs }
   let(:bastion_ssh_private_key_path) { RSpec.configuration.bastion_ssh_private_key_path }
@@ -37,7 +38,7 @@ describe 'Bastion' do
   it { should belong_to_vpc("vpc-#{component}-#{dep_id}")}
   its(:subnet_id) { should eq(first_public_subnet.id) }
   its(:image_id) { should eq(bastion_ami) }
-  its(:instance_type) { should eq('t2.micro') }
+  its(:instance_type) { should eq(bastion_instance_type) }
 
   its(:key_name) { should eq("bastion-#{component}-#{dep_id}") }
 

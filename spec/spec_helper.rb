@@ -30,6 +30,7 @@ RSpec.configure do |config|
       default: deployment_identifier || SecureRandom.hex[0, 8]
 
   config.add_setting :bastion_ami, default: 'ami-bb373ddf'
+  config.add_setting :bastion_instance_type, default: 't2.medium'
   config.add_setting :bastion_ssh_public_key_path, default: 'config/secrets/keys/bastion/ssh.public'
   config.add_setting :bastion_ssh_allow_cidrs, default: "#{current_public_ip_cidr},#{safe_ip_cidr}"
 
@@ -58,6 +59,7 @@ RSpec.configure do |config|
         deployment_identifier: variables.deployment_identifier,
 
         bastion_ami: variables.bastion_ami,
+        bastion_instance_type: variables.bastion_instance_type,
         bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
         bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
@@ -91,6 +93,7 @@ RSpec.configure do |config|
             deployment_identifier: variables.deployment_identifier,
 
             bastion_ami: variables.bastion_ami,
+            bastion_instance_type: variables.bastion_instance_type,
             bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
             bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
