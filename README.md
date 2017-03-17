@@ -13,8 +13,7 @@ The network consists of:
 * A DNS entry in the supplied public zone for the bastion
 * Standard tags for all resources
 
-![Diagram of infrastructure managed by this module]
-(/docs/architecture.png?raw=true)
+![Diagram of infrastructure managed by this module](/docs/architecture.png?raw=true)
 
 Usage
 -----
