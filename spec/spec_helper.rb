@@ -35,8 +35,8 @@ RSpec.configure do |config|
   config.add_setting :bastion_ssh_allow_cidrs, default: "#{current_public_ip_cidr},#{safe_ip_cidr}"
 
   config.add_setting :domain_name, default: 'greasedscone.uk'
-  config.add_setting :public_zone_id, default: 'Z2WA5EVJBZSQ3V'
-  config.add_setting :private_zone_id, default: 'Z2BVA9QD5NHSW6'
+  config.add_setting :public_zone_id, default: 'Z4Q2X3ESOZT4N'
+  config.add_setting :private_zone_id, default: 'Z2CDAFD23Q10HO'
 
   config.add_setting :bastion_user, default: 'centos'
   config.add_setting :bastion_ssh_private_key_path, default: 'config/secrets/keys/bastion/ssh.private'
