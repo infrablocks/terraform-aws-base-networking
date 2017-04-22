@@ -64,18 +64,19 @@ Executing `terraform get` will fetch the module.
 
 ### Outputs
 
-| Name                         | Description                                          |
-|------------------------------|------------------------------------------------------|
-| vpc_id                       | The ID of the created VPC                            |
-| vpc_cidr                     | The CIDR of the created VPC                          |
-| availability_zones           | The availability zones in which subnets were created |
-| number_of_availability_zones | The number of populated availability zones available |
-| public_subnet_ids            | The IDs of the public subnets                        |
-| public_subnet_cidrs          | The CIDRs of the public subnets                      |
-| private_subnet_ids           | The IDs of the private subnets                       |
-| private_subnet_cidrs         | The CIDRs of the private subnets                     |
-| bastion_public_ip            | The EIP attached to the bastion                      |
-| nat_public_ip                | The EIP attached to the NAT                          |
+| Name                              | Description                                          |
+|-----------------------------------|------------------------------------------------------|
+| vpc_id                            | The ID of the created VPC                            |
+| vpc_cidr                          | The CIDR of the created VPC                          |
+| availability_zones                | The availability zones in which subnets were created |
+| number_of_availability_zones      | The number of populated availability zones available |
+| public_subnet_ids                 | The IDs of the public subnets                        |
+| public_subnet_cidrs               | The CIDRs of the public subnets                      |
+| private_subnet_ids                | The IDs of the private subnets                       |
+| private_subnet_cidrs              | The CIDRs of the private subnets                     |
+| bastion_public_ip                 | The EIP attached to the bastion                      |
+| nat_public_ip                     | The EIP attached to the NAT                          |
+| open_to_bastion_security_group_id | The ID for the open-to-bastion security group        |
 
 
 Development
