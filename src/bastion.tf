@@ -64,3 +64,23 @@ resource "aws_security_group" "bastion" {
     ]
   }
 }
+
+resource "aws_security_group" "open_to_bastion" {
+  name = "open-to-bastion-${var.component}-${var.deployment_identifier}"
+  vpc_id = "${aws_vpc.base.id}"
+
+  tags {
+    Name = "open-to-bastion-sg-${var.component}-${var.deployment_identifier}"
+    Component = "${var.component}"
+    DeploymentIdentifier = "${var.deployment_identifier}"
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    security_groups = [
+      "${aws_security_group.bastion.id}"
+    ]
+  }
+}

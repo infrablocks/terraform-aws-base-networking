@@ -34,6 +34,10 @@ describe 'Bastion' do
     security_group("bastion-#{component}-#{dep_id}")
   end
 
+  let :open_to_bastion_security_group do
+    security_group("open-to-bastion-#{component}-#{dep_id}")
+  end
+
   it { should exist }
   it { should belong_to_vpc("vpc-#{component}-#{dep_id}")}
   its(:subnet_id) { should eq(first_public_subnet.id) }
@@ -60,7 +64,7 @@ describe 'Bastion' do
                 .ttl(60))
   end
 
-  context 'security group' do
+  context 'bastion security group' do
     it 'exists' do expect(bastion_security_group).to(exist) end
 
     it 'has Component tag' do
@@ -104,6 +108,37 @@ describe 'Bastion' do
       expect(egress_rule.to_port).to(eq(22))
       expect(egress_rule.ip_protocol).to(eq('tcp'))
       expect(egress_rule.ip_ranges.map(&:cidr_ip)).to(eq([vpc_cidr]))
+    end
+  end
+
+  context 'open-to-bastion security group' do
+    it 'exists' do expect(open_to_bastion_security_group).to(exist) end
+
+    it 'has Component tag' do
+      expect(open_to_bastion_security_group)
+          .to(have_tag('Component').value(component))
+    end
+
+    it 'has DeploymentIdentifier tag' do
+      expect(open_to_bastion_security_group)
+          .to(have_tag('DeploymentIdentifier').value(dep_id))
+    end
+
+    it 'is associated with the created VPC' do
+      expect(open_to_bastion_security_group.vpc_id).to(eq(created_vpc.id))
+    end
+
+    it 'allows inbound SSH from the bastion' do
+      permission = open_to_bastion_security_group.ip_permissions.find do |permission|
+        permission.user_id_group_pairs.find do |pair|
+          pair.group_id == bastion_security_group.id
+        end
+      end
+
+      expect(permission).not_to(be(nil))
+      expect(permission.from_port).to(eq(22))
+      expect(permission.to_port).to(eq(22))
+      expect(permission.ip_protocol).to(eq('tcp'))
     end
   end
 
