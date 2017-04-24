@@ -9,4 +9,7 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
 cd "$PROJECT_DIR"
 
+echo "$GPG_KEY" | gpg --import -
+git crypt unlock
+
 ./go test:integration
