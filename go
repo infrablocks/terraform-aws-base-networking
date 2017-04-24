@@ -50,7 +50,7 @@ if [[ "$skip_pre_flight" = "no" ]]; then
     if [[ "$skip_cloud_credentials" = "no" ]]; then
         echo "Sourcing cloud credentials."
         if grep -q true config/secrets/.unlocked; then
-          source config/secrets/aws/bsocial-account.sh
+          source config/secrets/aws/tobyclemsons-account.sh
         fi
     fi
 
