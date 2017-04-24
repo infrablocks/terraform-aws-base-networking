@@ -6,4 +6,4 @@ jobs:
       - image: ruby:2.3.1
     steps:
       - checkout
-      - run: echo "hello world"
+      - run: go test:integration
