@@ -9,7 +9,9 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
 cd "$PROJECT_DIR"
 
-echo "$GPG_KEY" | gpg --import -
+openssl aes-256-cbc \
+    -d \
+    -in ./.circleci/gpg.private.enc -k "${ENCRYPTION_PASSPHRASE}" | gpg --import -
 git crypt unlock
 
 ./go test:integration
