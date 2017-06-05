@@ -12,6 +12,8 @@ The network consists of:
 * A security group for the bastion limited to the supplied IP ranges
 * A DNS entry in the supplied public zone for the bastion
 * Standard tags for all resources
+* A notification (in the form of an S3 object) in an S3 bucket on VPC creation
+  (optional)
 
 ![Diagram of infrastructure managed by this module](/docs/architecture.png?raw=true)
 
@@ -46,20 +48,22 @@ Executing `terraform get` will fetch the module.
 
 ### Inputs
 
-| Name                        | Description                                       | Default | Required |
-|-----------------------------|---------------------------------------------------|:-------:|:--------:|
-| vpc_cidr                    | The CIDR to use for the VPC                       | -       | yes      |
-| region                      | The region into which to deploy the VPC           | -       | yes      |
-| availability_zones          | The availability zones for which to add subnets   | -       | yes      |
-| component                   | The component this network will contain           | -       | yes      |
-| deployment_identifier       | An identifier for this instantiation              | -       | yes      |
-| bastion_ami                 | The AMI to use for the bastion instance           | -       | yes      |
-| bastion_instance_type       | The instance type to use for the bastion instance | t2.nano | yes      |
-| bastion_ssh_public_key_path | The path to the public key to use for the bastion | -       | yes      |
-| bastion_ssh_allow_cidrs     | The CIDRs from which the bastion is reachable     | -       | yes      |
-| domain_name                 | The domain name of the supplied Route 53 zone     | -       | yes      |
-| public_zone_id              | The ID of the public Route 53 zone                | -       | yes      |
-| private_zone_id             | The ID of the private Route 53 zone               | -       | yes      |
+| Name                         | Description                                       | Default | Required                         |
+|------------------------------|---------------------------------------------------|:-------:|:--------------------------------:|
+| vpc_cidr                     | The CIDR to use for the VPC                       | -       | yes                              |
+| region                       | The region into which to deploy the VPC           | -       | yes                              |
+| availability_zones           | The availability zones for which to add subnets   | -       | yes                              |
+| component                    | The component this network will contain           | -       | yes                              |
+| deployment_identifier        | An identifier for this instantiation              | -       | yes                              |
+| bastion_ami                  | The AMI to use for the bastion instance           | -       | yes                              |
+| bastion_instance_type        | The instance type to use for the bastion instance | t2.nano | yes                              |
+| bastion_ssh_public_key_path  | The path to the public key to use for the bastion | -       | yes                              |
+| bastion_ssh_allow_cidrs      | The CIDRs from which the bastion is reachable     | -       | yes                              |
+| domain_name                  | The domain name of the supplied Route 53 zone     | -       | yes                              |
+| public_zone_id               | The ID of the public Route 53 zone                | -       | yes                              |
+| private_zone_id              | The ID of the private Route 53 zone               | -       | yes                              |
+| notify_of_vpc_creation       | Whether or not to notify via S3 of a created VPC  | yes     | yes                              |
+| infrastructure_events_bucket | S3 bucket in which to put VPC creation events     | -       | if notify_of_vpc_creation is yes |
 
 
 ### Outputs

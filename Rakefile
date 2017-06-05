@@ -79,5 +79,7 @@ def terraform_vars_for(opts)
       domain_name: 'greasedscone.uk',
       public_zone_id: 'Z2WA5EVJBZSQ3V',
       private_zone_id: 'Z2BVA9QD5NHSW6',
+
+      infrastructure_events_bucket: 'tobyclemson-open-source'
   }
 end

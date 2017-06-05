@@ -15,3 +15,10 @@ variable "bastion_ssh_allow_cidrs" {}
 variable "domain_name" {}
 variable "public_zone_id" {}
 variable "private_zone_id" {}
+
+variable "notify_of_vpc_creation" {
+  default = "yes"
+}
+variable "infrastructure_events_bucket" {
+  default = ""
+}

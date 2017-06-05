@@ -41,6 +41,8 @@ RSpec.configure do |config|
   config.add_setting :bastion_user, default: 'centos'
   config.add_setting :bastion_ssh_private_key_path, default: 'config/secrets/keys/bastion/ssh.private'
 
+  config.add_setting :infrastructure_events_bucket, default: 'tobyclemson-open-source'
+
   config.before(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('src')
@@ -65,7 +67,9 @@ RSpec.configure do |config|
 
         domain_name: variables.domain_name,
         public_zone_id: variables.public_zone_id,
-        private_zone_id: variables.private_zone_id
+        private_zone_id: variables.private_zone_id,
+
+        infrastructure_events_bucket: variables.infrastructure_events_bucket
     })
 
     puts
@@ -99,7 +103,9 @@ RSpec.configure do |config|
 
             domain_name: variables.domain_name,
             public_zone_id: variables.public_zone_id,
-            private_zone_id: variables.private_zone_id
+            private_zone_id: variables.private_zone_id,
+
+            infrastructure_events_bucket: variables.infrastructure_events_bucket
         })
 
       puts

@@ -11,6 +11,8 @@ describe 'VPC' do
 
   let(:private_zone_id) { RSpec.configuration.private_zone_id }
 
+  let(:infrastructure_events_bucket) { RSpec.configuration.infrastructure_events_bucket }
+
   subject { vpc("vpc-#{component}-#{dep_id}") }
 
   let :private_hosted_zone do
@@ -22,6 +24,13 @@ describe 'VPC' do
   it { should have_tag('DeploymentIdentifier').value(dep_id) }
 
   its(:cidr_block) { should eq vpc_cidr }
+
+  it 'writes the VPC ID to the provided infrastructure events bucket' do
+    expected_vpc_id = subject.vpc_id
+
+    expect(s3_bucket(infrastructure_events_bucket))
+        .to(have_object("vpc-created/#{expected_vpc_id}"))
+  end
 
   it 'exposes the VPC ID as an output' do
     expected_vpc_id = subject.vpc_id
