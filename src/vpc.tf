@@ -14,12 +14,12 @@ resource "aws_route53_zone_association" "base" {
   vpc_id = "${aws_vpc.base.id}"
 }
 
-resource "aws_s3_bucket_object" "vpc_existence_event" {
+resource "aws_s3_bucket_object" "vpc_lifecycle_event" {
   bucket = "${var.infrastructure_events_bucket}"
   key = "vpc-created/${aws_vpc.base.id}"
   content = "${aws_vpc.base.id}"
 
-  count = "${var.notify_of_vpc_creation == "yes" ? 1 : 0}"
+  count = "${var.include_lifecycle_events == "yes" ? 1 : 0}"
 
   depends_on = [
     "aws_subnet.public",

@@ -16,7 +16,7 @@ variable "domain_name" {}
 variable "public_zone_id" {}
 variable "private_zone_id" {}
 
-variable "notify_of_vpc_creation" {
+variable "include_lifecycle_events" {
   default = "yes"
 }
 variable "infrastructure_events_bucket" {
