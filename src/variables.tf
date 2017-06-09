@@ -4,6 +4,9 @@ variable "availability_zones" {}
 
 variable "component" {}
 variable "deployment_identifier" {}
+variable "dependencies" {
+  default = ""
+}
 
 variable "bastion_ami" {}
 variable "bastion_instance_type" {

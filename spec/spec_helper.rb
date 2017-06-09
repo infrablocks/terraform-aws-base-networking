@@ -28,6 +28,7 @@ RSpec.configure do |config|
   config.add_setting :component, default: 'integration-tests'
   config.add_setting :deployment_identifier,
       default: deployment_identifier || SecureRandom.hex[0, 8]
+  config.add_setting :dependencies, default: 'other,stuff'
 
   config.add_setting :bastion_ami, default: 'ami-bb373ddf'
   config.add_setting :bastion_instance_type, default: 't2.medium'
@@ -59,6 +60,7 @@ RSpec.configure do |config|
 
         component: variables.component,
         deployment_identifier: variables.deployment_identifier,
+        dependencies: variables.dependencies,
 
         bastion_ami: variables.bastion_ami,
         bastion_instance_type: variables.bastion_instance_type,
@@ -95,6 +97,7 @@ RSpec.configure do |config|
 
             component: variables.component,
             deployment_identifier: variables.deployment_identifier,
+            dependencies: variables.dependencies,
 
             bastion_ami: variables.bastion_ami,
             bastion_instance_type: variables.bastion_instance_type,

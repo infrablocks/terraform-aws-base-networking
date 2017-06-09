@@ -5,6 +5,7 @@ describe 'VPC' do
 
   let(:component) { RSpec.configuration.component }
   let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:dependencies) { RSpec.configuration.dependencies }
 
   let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
   let(:availability_zones) { RSpec.configuration.availability_zones }
@@ -22,6 +23,7 @@ describe 'VPC' do
   it { should exist }
   it { should have_tag('Component').value(component) }
   it { should have_tag('DeploymentIdentifier').value(dep_id) }
+  it { should have_tag('Dependencies').value(dependencies) }
 
   its(:cidr_block) { should eq vpc_cidr }
 
