@@ -1,6 +1,8 @@
 Terraform AWS Base Networking
 =============================
 
+[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-base-networking.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-base-networking)
+
 A Terraform module for building a base network in AWS.
 
 The network consists of:
