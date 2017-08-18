@@ -1,13 +1,14 @@
 require 'spec_helper'
+require 'netaddr'
 
 describe 'Public' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
-  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
-  let(:availability_zones) { RSpec.configuration.availability_zones }
+  let(:vpc_cidr) { vars.vpc_cidr }
+  let(:availability_zones) { vars.availability_zones }
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -69,16 +70,14 @@ describe 'Public' do
 
     it 'exposes the public subnet IDs as an output' do
       expected_public_subnet_ids = public_subnets.map(&:id).join(',')
-      actual_public_subnet_ids = Terraform.output(
-          name: 'public_subnet_ids')
+      actual_public_subnet_ids = output_with_name('public_subnet_ids')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
 
     it 'exposes the public subnet CIDR blocks as an output' do
       expected_public_subnet_ids = public_subnets.map(&:cidr_block).join(',')
-      actual_public_subnet_ids = Terraform.output(
-          name: 'public_subnet_cidr_blocks')
+      actual_public_subnet_ids = output_with_name('public_subnet_cidr_blocks')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
@@ -116,8 +115,7 @@ describe 'Public' do
     end
 
     it 'exposes the public route table as an output' do
-      public_route_table_id = Terraform.output(
-          name: 'public_route_table_id')
+      public_route_table_id = output_with_name('public_route_table_id')
 
       expect(public_route_table_id ).to(eq(public_route_table.id))
     end

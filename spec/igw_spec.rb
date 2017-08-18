@@ -3,8 +3,8 @@ require 'spec_helper'
 describe 'IGW' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
   subject { igw("igw-#{component}-#{dep_id}") }
 

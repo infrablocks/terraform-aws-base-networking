@@ -4,20 +4,20 @@ require 'net/ssh'
 describe 'Bastion' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
-  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
-  let(:availability_zones) { RSpec.configuration.availability_zones }
+  let(:vpc_cidr) { vars.vpc_cidr }
+  let(:availability_zones) { vars.availability_zones }
 
-  let(:bastion_ami) { RSpec.configuration.bastion_ami }
-  let(:bastion_instance_type) { RSpec.configuration.bastion_instance_type }
-  let(:bastion_user) { RSpec.configuration.bastion_user }
-  let(:bastion_ssh_allow_cidrs) { RSpec.configuration.bastion_ssh_allow_cidrs }
-  let(:bastion_ssh_private_key_path) { RSpec.configuration.bastion_ssh_private_key_path }
+  let(:bastion_ami) { vars.bastion_ami }
+  let(:bastion_instance_type) { vars.bastion_instance_type }
+  let(:bastion_user) { vars.bastion_user }
+  let(:bastion_ssh_allow_cidrs) { vars.bastion_ssh_allow_cidrs }
+  let(:bastion_ssh_private_key_path) { vars.bastion_ssh_private_key_path }
 
-  let(:domain_name) { RSpec.configuration.domain_name }
-  let(:public_zone_id) { RSpec.configuration.public_zone_id }
+  let(:domain_name) { vars.domain_name }
+  let(:public_zone_id) { vars.public_zone_id }
 
   subject { ec2("bastion-#{component}-#{dep_id}") }
 
@@ -158,6 +158,6 @@ describe 'Bastion' do
   end
 
   def bastion_public_ip_output
-    Terraform.output(name: 'bastion_public_ip')
+    output_with_name('bastion_public_ip')
   end
 end

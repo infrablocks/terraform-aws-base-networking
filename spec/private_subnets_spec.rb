@@ -1,13 +1,14 @@
 require 'spec_helper'
+require 'netaddr'
 
 describe 'Private' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
-  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
-  let(:availability_zones) { RSpec.configuration.availability_zones }
+  let(:vpc_cidr) { vars.vpc_cidr }
+  let(:availability_zones) { vars.availability_zones }
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -75,16 +76,14 @@ describe 'Private' do
 
     it 'exposes the private subnet IDs as an output' do
       expected_private_subnet_ids = private_subnets.map(&:id).join(',')
-      actual_private_subnet_ids = Terraform.output(
-          name: 'private_subnet_ids')
+      actual_private_subnet_ids = output_with_name('private_subnet_ids')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
 
     it 'exposes the private subnet CIDR blocks as an output' do
       expected_private_subnet_ids = private_subnets.map(&:cidr_block).join(',')
-      actual_private_subnet_ids = Terraform.output(
-          name: 'private_subnet_cidr_blocks')
+      actual_private_subnet_ids = output_with_name('private_subnet_cidr_blocks')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
@@ -120,8 +119,7 @@ describe 'Private' do
     end
 
     it 'exposes the private route table as an output' do
-      private_route_table_id = Terraform.output(
-          name: 'private_route_table_id')
+      private_route_table_id = output_with_name('private_route_table_id')
 
       expect(private_route_table_id ).to(eq(private_route_table.id))
     end

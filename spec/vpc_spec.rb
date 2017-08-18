@@ -3,16 +3,16 @@ require 'spec_helper'
 describe 'VPC' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
-  let(:dependencies) { RSpec.configuration.dependencies }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
+  let(:dependencies) { vars.dependencies }
 
-  let(:vpc_cidr) { RSpec.configuration.vpc_cidr }
-  let(:availability_zones) { RSpec.configuration.availability_zones }
+  let(:vpc_cidr) { vars.vpc_cidr }
+  let(:availability_zones) { vars.availability_zones }
 
-  let(:private_zone_id) { RSpec.configuration.private_zone_id }
+  let(:private_zone_id) { vars.private_zone_id }
 
-  let(:infrastructure_events_bucket) { RSpec.configuration.infrastructure_events_bucket }
+  let(:infrastructure_events_bucket) { vars.infrastructure_events_bucket }
 
   subject { vpc("vpc-#{component}-#{dep_id}") }
 
@@ -36,14 +36,14 @@ describe 'VPC' do
 
   it 'exposes the VPC ID as an output' do
     expected_vpc_id = subject.vpc_id
-    actual_vpc_id = Terraform.output(name: 'vpc_id')
+    actual_vpc_id = output_with_name('vpc_id')
 
     expect(actual_vpc_id).to(eq(expected_vpc_id))
   end
 
   it 'exposes the VPC CIDR block as an output' do
     expected_vpc_cidr = subject.cidr_block
-    actual_vpc_cidr = Terraform.output(name: 'vpc_cidr')
+    actual_vpc_cidr = output_with_name('vpc_cidr')
 
     expect(actual_vpc_cidr).to(eq(expected_vpc_cidr))
   end
@@ -57,14 +57,14 @@ describe 'VPC' do
 
   it 'exposes the availability zones as an output' do
     expected_availability_zones = availability_zones
-    actual_availability_zones = Terraform.output(name: 'availability_zones')
+    actual_availability_zones = output_with_name('availability_zones')
 
     expect(actual_availability_zones).to(eq(expected_availability_zones))
   end
 
   it 'exposes the number of availability zones as an output' do
     expected_count = availability_zones.split(',').count.to_s
-    actual_count = Terraform.output(name: 'number_of_availability_zones')
+    actual_count = output_with_name('number_of_availability_zones')
 
     expect(actual_count).to(eq(expected_count))
   end

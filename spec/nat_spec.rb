@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'NAT' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:dep_id) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
-  let(:availability_zones) { RSpec.configuration.availability_zones }
+  let(:availability_zones) { vars.availability_zones }
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -34,6 +34,6 @@ describe 'NAT' do
   end
 
   def nat_public_ip_output
-    Terraform.output(name: 'nat_public_ip')
+    output_with_name('nat_public_ip')
   end
 end
