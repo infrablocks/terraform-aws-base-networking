@@ -2,8 +2,6 @@ require 'spec_helper'
 require 'net/ssh'
 
 describe 'Bastion' do
-  include_context :terraform
-
   let(:component) { vars.component }
   let(:dep_id) { vars.deployment_identifier }
 

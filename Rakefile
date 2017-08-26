@@ -1,5 +1,4 @@
 require 'rspec/core/rake_task'
-require 'securerandom'
 require 'git'
 require 'semantic'
 require 'rake_terraform'

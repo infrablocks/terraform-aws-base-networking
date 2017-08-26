@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'NAT' do
-  include_context :terraform
-
   let(:component) { vars.component }
   let(:dep_id) { vars.deployment_identifier }
 

@@ -2,8 +2,6 @@ require 'spec_helper'
 require 'netaddr'
 
 describe 'Private' do
-  include_context :terraform
-
   let(:component) { vars.component }
   let(:dep_id) { vars.deployment_identifier }
 

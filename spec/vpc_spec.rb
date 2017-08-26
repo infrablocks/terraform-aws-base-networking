@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'VPC' do
-  include_context :terraform
-
   let(:component) { vars.component }
   let(:dep_id) { vars.deployment_identifier }
   let(:dependencies) { vars.dependencies }
