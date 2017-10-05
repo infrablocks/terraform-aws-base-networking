@@ -8,8 +8,6 @@ variable "dependencies" {
   default = ""
 }
 
-variable "domain_name" {}
-variable "public_zone_id" {}
 variable "private_zone_id" {}
 
 variable "include_lifecycle_events" {
