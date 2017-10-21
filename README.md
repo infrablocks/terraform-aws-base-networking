@@ -86,6 +86,49 @@ Executing `terraform get` will fetch the module.
 | open_to_bastion_security_group_id | The ID for the open-to-bastion security group        |
 
 
+### Required Permissions
+
+* ec2:DescribeVpcs
+* ec2:DescribeAddresses
+* ec2:DescribeVpcAttribute
+* ec2:DescribeVpcClassicLink
+* ec2:DescribeVpcClassicLinkDnsSupport
+* ec2:DescribeRouteTables
+* ec2:DescribeSecurityGroups
+* ec2:DescribeNetworkAcls
+* ec2:DescribeSubnets 
+* ec2:DescribeInternetGateways
+* ec2:DescribeNatGateways
+* ec2:ModifyVpcAttribute
+* ec2:AllocateAddress
+* ec2:ReleaseAddress
+* ec2:AssociateRouteTable
+* ec2:DisassociateRouteTable
+* ec2:AttachInternetGateway
+* ec2:DetachInternetGateway
+* ec2:DeleteInternetGateway
+* ec2:CreateRoute
+* ec2:CreateNatGateway
+* ec2:CreateVpc
+* ec2:CreateTags
+* ec2:CreateSubnet
+* ec2:CreateRouteTable
+* ec2:CreateInternetGateway
+* ec2:DeleteRoute
+* ec2:DeleteRouteTable
+* ec2:DeleteSubnet
+* ec2:DeleteNatGateway
+* ec2:DeleteVpc
+* s3:ListBucket
+* s3:GetObject
+* s3:GetObjectTagging
+* s3:DeleteObject
+* route53:AssociateVPCWithHostedZone
+* route53:DisassociateVPCFromHostedZone
+* route53:GetChange
+* route53:GetHostedZone
+
+
 Development
 -----------
 
