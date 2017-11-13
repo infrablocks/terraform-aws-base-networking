@@ -55,6 +55,8 @@ Executing `terraform get` will fetch the module.
 | vpc_cidr                     | The CIDR to use for the VPC                                        | -       | yes                                |
 | region                       | The region into which to deploy the VPC                            | -       | yes                                |
 | availability_zones           | The availability zones for which to add subnets                    | -       | yes                                |
+| public_subnets_offset        | The number of /24s to offset the public subnets in the VPC CIDR    | 0       | yes                                |
+| private_subnets_offset       | The number of /24s to offset the private subnets in the VPC CIDR   | 0       | yes                                |
 | component                    | The component this network will contain                            | -       | yes                                |
 | deployment_identifier        | An identifier for this instantiation                               | -       | yes                                |
 | dependencies                 | A comma separated list of components depended on my this component | -       | no                                 |

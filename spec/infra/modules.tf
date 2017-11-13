@@ -5,6 +5,9 @@ module "base_network" {
   region = "${var.region}"
   availability_zones = "${var.availability_zones}"
 
+  public_subnets_offset = "${var.public_subnets_offset}"
+  private_subnets_offset = "${var.private_subnets_offset}"
+
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
   dependencies = "${var.dependencies}"

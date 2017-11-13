@@ -8,6 +8,13 @@ variable "dependencies" {
   default = ""
 }
 
+variable "public_subnets_offset" {
+  default = 0
+}
+variable "private_subnets_offset" {
+  default = 0
+}
+
 variable "private_zone_id" {}
 
 variable "include_lifecycle_events" {

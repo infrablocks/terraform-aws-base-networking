@@ -3,6 +3,9 @@ vpc_cidr: '10.1.0.0/16'
 region: 'eu-west-2'
 availability_zones: 'eu-west-2a,eu-west-2b'
 
+public_subnets_offset: 1
+private_subnets_offset: 2
+
 component: 'test'
 deployment_identifier: '<%= @deployment_identifier %>'
 dependencies: 'other,stuff'
