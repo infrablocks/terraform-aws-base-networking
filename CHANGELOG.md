@@ -1,3 +1,15 @@
+## 0.1.17 (December 28th, 2017)
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* The configuration directory has changed from `<repo>/src` to `<repo>` to
+  satisfy the terraform standard module structure.
+  
+IMPROVEMENTS:
+
+* All variables and outputs now have descriptions to satisfy the terraform
+  standard module structure. 
+
 ## 0.1.11 (October 5th, 2017)
 
 BACKWARDS INCOMPATIBILITIES / NOTES:

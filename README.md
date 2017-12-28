@@ -60,12 +60,6 @@ Executing `terraform get` will fetch the module.
 | component                    | The component this network will contain                            | -       | yes                                |
 | deployment_identifier        | An identifier for this instantiation                               | -       | yes                                |
 | dependencies                 | A comma separated list of components depended on my this component | -       | no                                 |
-| bastion_ami                  | The AMI to use for the bastion instance                            | -       | yes                                |
-| bastion_instance_type        | The instance type to use for the bastion instance                  | t2.nano | yes                                |
-| bastion_ssh_public_key_path  | The path to the public key to use for the bastion                  | -       | yes                                |
-| bastion_ssh_allow_cidrs      | The CIDRs from which the bastion is reachable                      | -       | yes                                |
-| domain_name                  | The domain name of the supplied Route 53 zone                      | -       | yes                                |
-| public_zone_id               | The ID of the public Route 53 zone                                 | -       | yes                                |
 | private_zone_id              | The ID of the private Route 53 zone                                | -       | yes                                |
 | include_lifecycle_events     | Whether or not to notify via S3 of a created VPC                   | yes     | yes                                |
 | infrastructure_events_bucket | S3 bucket in which to put VPC creation events                      | -       | if include_lifecycle_events is yes |
@@ -81,11 +75,11 @@ Executing `terraform get` will fetch the module.
 | number_of_availability_zones      | The number of populated availability zones available |
 | public_subnet_ids                 | The IDs of the public subnets                        |
 | public_subnet_cidrs               | The CIDRs of the public subnets                      |
+| public_route_table_id             | The ID of the public route table                     |
 | private_subnet_ids                | The IDs of the private subnets                       |
 | private_subnet_cidrs              | The CIDRs of the private subnets                     |
-| bastion_public_ip                 | The EIP attached to the bastion                      |
+| private_route_table_id            | The ID of the private route table                    |
 | nat_public_ip                     | The EIP attached to the NAT                          |
-| open_to_bastion_security_group_id | The ID for the open-to-bastion security group        |
 
 
 ### Required Permissions

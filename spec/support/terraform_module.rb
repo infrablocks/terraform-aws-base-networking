@@ -8,47 +8,65 @@ module TerraformModule
       @configuration ||= Configuration.new
     end
 
-    def output_with_name(name)
-      RubyTerraform.output(name: name, state: configuration.state_file)
+    def output_for(role, name)
+      RubyTerraform.output(
+          name: name,
+          state: configuration.for(role).state_file)
     end
 
-    def provision(vars)
+    def provision_for(role, vars = nil)
+      provision(OpenStruct.new(
+          configuration.for(role)
+              .to_h.merge(vars: vars || configuration.for(role).vars)))
+    end
+
+    def provision(configuration)
       puts
-      puts "Provisioning with deployment identifier: #{configuration.vars.deployment_identifier}"
+      puts "Provisioning with deployment identifier: #{configuration.deployment_identifier}"
       puts
 
-      RubyTerraform.clean(
-          directory: configuration.configuration_directory)
-      RubyTerraform.init(
-          source: configuration.source_directory,
-          path: configuration.configuration_directory)
+      FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
+      FileUtils.mkdir_p(File.dirname(configuration.configuration_directory))
+      FileUtils.cp_r(
+          configuration.source_directory,
+          configuration.configuration_directory)
+
       Dir.chdir(configuration.configuration_directory) do
+        RubyTerraform.init
         RubyTerraform.apply(
             state: configuration.state_file,
-            configuration_directory: configuration.configuration_directory,
-            vars: vars.to_h)
+            directory: '.',
+            vars: configuration.vars.to_h)
       end
 
       puts
     end
 
-    def destroy(vars)
+    def destroy_for(role, vars = nil)
+      destroy(OpenStruct.new(
+          configuration.for(role)
+              .to_h.merge(vars: vars || configuration.for(role).vars)))
+    end
+
+    def destroy(configuration)
       unless ENV['DEPLOYMENT_IDENTIFIER']
         puts
-        puts "Destroying with deployment identifier: #{configuration.vars.deployment_identifier}"
+        puts "Destroying with deployment identifier: #{configuration.deployment_identifier}"
         puts
 
-        RubyTerraform.clean(
-            directory: configuration.configuration_directory)
-        RubyTerraform.init(
-            source: configuration.source_directory,
-            path: configuration.configuration_directory)
+        FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
+        FileUtils.mkdir_p(File.dirname(configuration.configuration_directory))
+        FileUtils.cp_r(
+            configuration.source_directory,
+            configuration.configuration_directory)
+
         Dir.chdir(configuration.configuration_directory) do
+          RubyTerraform.init
           RubyTerraform.destroy(
-              configuration_directory: configuration.configuration_directory,
               state: configuration.state_file,
-              force: true,
-              vars: vars.to_h)
+              directory: '.',
+              vars: configuration.vars.to_h,
+              force: true)
         end
 
         puts

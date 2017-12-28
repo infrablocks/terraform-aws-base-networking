@@ -18,9 +18,9 @@ RSpec.configure do |config|
   config.include_context :terraform
 
   config.before(:suite) do
-    TerraformModule.provision(TerraformModule.configuration.vars)
+    TerraformModule.provision_for(:harness)
   end
   config.after(:suite) do
-    TerraformModule.destroy(TerraformModule.configuration.vars)
+    TerraformModule.destroy_for(:harness)
   end
 end

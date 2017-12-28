@@ -1,5 +1,5 @@
 module "base_network" {
-  source = "../../../src"
+  source = "../../../../"
 
   vpc_cidr = "${var.vpc_cidr}"
   region = "${var.region}"

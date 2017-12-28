@@ -9,7 +9,7 @@ configuration = Configuration.new
 
 RakeTerraform.define_installation_tasks(
     path: File.join(Dir.pwd, 'vendor', 'terraform'),
-    version: '0.9.8')
+    version: '0.10.8')
 
 task :default => 'test:integration'
 
@@ -19,19 +19,23 @@ namespace :test do
   end
 end
 
-RakeTerraform.define_command_tasks do |t|
-  t.argument_names = [:deployment_identifier]
+namespace :deployment do
+  namespace :harness do
+    RakeTerraform.define_command_tasks do |t|
+      t.argument_names = [:deployment_identifier]
 
-  t.configuration_name = 'base networking'
-  t.source_directory = configuration.source_directory
-  t.work_directory = configuration.work_directory
+      t.configuration_name = 'ECS Route53 registration module'
+      t.source_directory = configuration.for(:harness).source_directory
+      t.work_directory = configuration.for(:harness).work_directory
 
-  t.state_file = configuration.state_file
+      t.state_file = configuration.for(:harness).state_file
 
-  t.vars = lambda do |args|
-    configuration
-        .vars_for(args)
-        .to_h
+      t.vars = lambda do |args|
+        configuration.for(:harness, args)
+            .vars
+            .to_h
+      end
+    end
   end
 end
 

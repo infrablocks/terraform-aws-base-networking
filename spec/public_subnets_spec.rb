@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'netaddr'
 
 describe 'Public' do
-  let(:component) { vars.component }
-  let(:dep_id) { vars.deployment_identifier }
+  let(:component) {vars.component}
+  let(:dep_id) {vars.deployment_identifier}
 
-  let(:vpc_cidr) { vars.vpc_cidr }
-  let(:availability_zones) { vars.availability_zones }
+  let(:vpc_cidr) {vars.vpc_cidr}
+  let(:availability_zones) {vars.availability_zones}
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -63,19 +63,21 @@ describe 'Public' do
         expect(cidr.contains?(subnet_cidr)).to(be(true))
       end
 
-      expect(public_subnets.map(&:cidr_block).uniq.length).to(eq(public_subnets.length))
+      expect(public_subnets.map(&:cidr_block).uniq.length)
+          .to(eq(public_subnets.length))
     end
 
     it 'exposes the public subnet IDs as an output' do
       expected_public_subnet_ids = public_subnets.map(&:id).join(',')
-      actual_public_subnet_ids = output_with_name('public_subnet_ids')
+      actual_public_subnet_ids = output_for(:harness, 'public_subnet_ids')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
 
     it 'exposes the public subnet CIDR blocks as an output' do
       expected_public_subnet_ids = public_subnets.map(&:cidr_block).join(',')
-      actual_public_subnet_ids = output_with_name('public_subnet_cidr_blocks')
+      actual_public_subnet_ids =
+          output_for(:harness, 'public_subnet_cidr_blocks')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
@@ -88,7 +90,7 @@ describe 'Public' do
 
     it 'has a DeploymentIdentifier' do
       expect(public_route_table).to(have_tag('DeploymentIdentifier')
-          .value(dep_id))
+                                        .value(dep_id))
     end
 
     it 'has a Tier of public' do
@@ -113,9 +115,9 @@ describe 'Public' do
     end
 
     it 'exposes the public route table as an output' do
-      public_route_table_id = output_with_name('public_route_table_id')
+      public_route_table_id = output_for(:harness, 'public_route_table_id')
 
-      expect(public_route_table_id ).to(eq(public_route_table.id))
+      expect(public_route_table_id).to(eq(public_route_table.id))
     end
   end
 end

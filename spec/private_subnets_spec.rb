@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'netaddr'
 
 describe 'Private' do
-  let(:component) { vars.component }
-  let(:dep_id) { vars.deployment_identifier }
+  let(:component) {vars.component}
+  let(:dep_id) {vars.deployment_identifier}
 
-  let(:vpc_cidr) { vars.vpc_cidr }
-  let(:availability_zones) { vars.availability_zones }
+  let(:vpc_cidr) {vars.vpc_cidr}
+  let(:availability_zones) {vars.availability_zones}
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -20,9 +20,10 @@ describe 'Private' do
     route_table("private-routetable-#{component}-#{dep_id}")
   end
   let :nat_gateway do
-    response = ec2_client.describe_nat_gateways({
-        filter: [{ name: 'vpc-id', values: [created_vpc.id] }]
-    })
+    response = ec2_client.describe_nat_gateways(
+        {
+            filter: [{name: 'vpc-id', values: [created_vpc.id]}]
+        })
     response.nat_gateways.single_resource(created_vpc.id)
   end
 
@@ -36,7 +37,7 @@ describe 'Private' do
     it 'has a DeploymentIdentifier tag on each subnet' do
       private_subnets.each do |subnet|
         expect(subnet).to(have_tag('DeploymentIdentifier')
-            .value(dep_id))
+                              .value(dep_id))
       end
     end
 
@@ -69,19 +70,21 @@ describe 'Private' do
         expect(cidr.contains?(subnet_cidr)).to(be(true))
       end
 
-      expect(private_subnets.map(&:cidr_block).uniq.length).to(eq(private_subnets.length))
+      expect(private_subnets.map(&:cidr_block).uniq.length)
+          .to(eq(private_subnets.length))
     end
 
     it 'exposes the private subnet IDs as an output' do
       expected_private_subnet_ids = private_subnets.map(&:id).join(',')
-      actual_private_subnet_ids = output_with_name('private_subnet_ids')
+      actual_private_subnet_ids = output_for(:harness, 'private_subnet_ids')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
 
     it 'exposes the private subnet CIDR blocks as an output' do
       expected_private_subnet_ids = private_subnets.map(&:cidr_block).join(',')
-      actual_private_subnet_ids = output_with_name('private_subnet_cidr_blocks')
+      actual_private_subnet_ids =
+          output_for(:harness, 'private_subnet_cidr_blocks')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
@@ -94,7 +97,7 @@ describe 'Private' do
 
     it 'has a DeploymentIdentifier' do
       expect(private_route_table).to(have_tag('DeploymentIdentifier')
-          .value(dep_id))
+                                         .value(dep_id))
     end
 
     it 'has a Tier of private' do
@@ -107,7 +110,8 @@ describe 'Private' do
 
     it 'has a route to the NAT gateway for all internet traffic' do
       expect(private_route_table)
-          .to(have_route('0.0.0.0/0').target(gateway: nat_gateway.nat_gateway_id))
+          .to(have_route('0.0.0.0/0')
+                  .target(gateway: nat_gateway.nat_gateway_id))
     end
 
     it 'is associated to each subnet' do
@@ -117,9 +121,9 @@ describe 'Private' do
     end
 
     it 'exposes the private route table as an output' do
-      private_route_table_id = output_with_name('private_route_table_id')
+      private_route_table_id = output_for(:harness, 'private_route_table_id')
 
-      expect(private_route_table_id ).to(eq(private_route_table.id))
+      expect(private_route_table_id).to(eq(private_route_table.id))
     end
   end
 end

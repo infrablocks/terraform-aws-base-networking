@@ -1,7 +1,7 @@
 module Awspec::Type
-  class Igw < Base
+  class Igw < ResourceBase
     include Awspec::Helper::Finder
-    
+
     aws_resource Aws::EC2::InternetGateway
     tags_allowed
 

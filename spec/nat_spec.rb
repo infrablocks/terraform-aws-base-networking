@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe 'NAT' do
-  let(:component) { vars.component }
-  let(:dep_id) { vars.deployment_identifier }
+  let(:component) {vars.component}
+  let(:dep_id) {vars.deployment_identifier}
 
-  let(:availability_zones) { vars.availability_zones }
+  let(:availability_zones) {vars.availability_zones}
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -14,10 +14,13 @@ describe 'NAT' do
     subnet("public-subnet-#{component}-#{dep_id}-#{zone}")
   end
 
+  let(:nat_public_ip_output) {output_for(:harness, 'nat_public_ip')}
+
   subject do
-    response = ec2_client.describe_nat_gateways({
-        filter: [{ name: 'vpc-id', values: [created_vpc.id] }]
-    })
+    response = ec2_client.describe_nat_gateways(
+        {
+            filter: [{name: 'vpc-id', values: [created_vpc.id]}]
+        })
     response.nat_gateways.single_resource(created_vpc.id)
   end
 
@@ -27,11 +30,8 @@ describe 'NAT' do
 
   it 'associates an EIP and exposes as an output' do
     public_ip = nat_public_ip_output
+
     expect(subject.nat_gateway_addresses.map(&:public_ip))
         .to(include(public_ip))
-  end
-
-  def nat_public_ip_output
-    output_with_name('nat_public_ip')
   end
 end
