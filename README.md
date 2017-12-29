@@ -24,7 +24,7 @@ To use the module, include something like the following in your terraform config
 ```hcl-terraform
 module "base-network" {
   source  = "infrablocks/base-networking/aws"
-  version = "0.1.19"
+  version = "0.1.20"
   
   vpc_cidr = "10.0.0.0/16"
   region = "eu-west-2"
