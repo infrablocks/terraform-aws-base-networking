@@ -23,7 +23,8 @@ To use the module, include something like the following in your terraform config
 
 ```hcl-terraform
 module "base-network" {
-  source = "git@github.com:tobyclemson/terraform-aws-base-networking.git"
+  source  = "infrablocks/base-networking/aws"
+  version = "0.1.19"
   
   vpc_cidr = "10.0.0.0/16"
   region = "eu-west-2"
@@ -58,19 +59,19 @@ Executing `terraform get` will fetch the module.
 
 ### Outputs
 
-| Name                              | Description                                          |
-|-----------------------------------|------------------------------------------------------|
-| vpc_id                            | The ID of the created VPC                            |
-| vpc_cidr                          | The CIDR of the created VPC                          |
-| availability_zones                | The availability zones in which subnets were created |
-| number_of_availability_zones      | The number of populated availability zones available |
-| public_subnet_ids                 | The IDs of the public subnets                        |
-| public_subnet_cidrs               | The CIDRs of the public subnets                      |
-| public_route_table_id             | The ID of the public route table                     |
-| private_subnet_ids                | The IDs of the private subnets                       |
-| private_subnet_cidrs              | The CIDRs of the private subnets                     |
-| private_route_table_id            | The ID of the private route table                    |
-| nat_public_ip                     | The EIP attached to the NAT                          |
+| Name                         | Description                                          |
+|------------------------------|------------------------------------------------------|
+| vpc_id                       | The ID of the created VPC                            |
+| vpc_cidr                     | The CIDR of the created VPC                          |
+| availability_zones           | The availability zones in which subnets were created |
+| number_of_availability_zones | The number of populated availability zones available |
+| public_subnet_ids            | The IDs of the public subnets                        |
+| public_subnet_cidrs          | The CIDRs of the public subnets                      |
+| public_route_table_id        | The ID of the public route table                     |
+| private_subnet_ids           | The IDs of the private subnets                       |
+| private_subnet_cidrs         | The CIDRs of the private subnets                     |
+| private_route_table_id       | The ID of the private route table                    |
+| nat_public_ip                | The EIP attached to the NAT                          |
 
 
 ### Required Permissions
@@ -181,13 +182,13 @@ execute:
 To provision the module contents:
 
 ```bash
-./go provision:aws[<deployment_identifier>]
+./go deployment:harness:provision[<deployment_identifier>]
 ```
 
 To destroy the module contents:
 
 ```bash
-./go destroy:aws[<deployment_identifier>]
+./go deployment:harness:destroy[<deployment_identifier>]
 ```
 
 ### Common Tasks
