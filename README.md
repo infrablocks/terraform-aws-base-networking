@@ -37,8 +37,6 @@ module "base-network" {
 }
 ```
 
-Executing `terraform get` will fetch the module.
-
 
 ### Inputs
 
