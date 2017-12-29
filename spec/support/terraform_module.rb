@@ -36,7 +36,8 @@ module TerraformModule
         RubyTerraform.apply(
             state: configuration.state_file,
             directory: '.',
-            vars: configuration.vars.to_h)
+            vars: configuration.vars.to_h,
+            auto_approve: true)
       end
 
       puts

@@ -9,7 +9,7 @@ configuration = Configuration.new
 
 RakeTerraform.define_installation_tasks(
     path: File.join(Dir.pwd, 'vendor', 'terraform'),
-    version: '0.10.8')
+    version: '0.11.1')
 
 task :default => 'test:integration'
 
@@ -24,7 +24,7 @@ namespace :deployment do
     RakeTerraform.define_command_tasks do |t|
       t.argument_names = [:deployment_identifier]
 
-      t.configuration_name = 'ECS Route53 registration module'
+      t.configuration_name = 'base networking module'
       t.source_directory = configuration.for(:harness).source_directory
       t.work_directory = configuration.for(:harness).work_directory
 
