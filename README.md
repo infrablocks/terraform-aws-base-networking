@@ -10,14 +10,11 @@ The network consists of:
 * A NAT gateway for outbound Internet connectivity
 * Routes from the public subnets to the Internet gateway
 * Routes from the private subnets to the NAT
-* A bastion host configured with the supplied SSH key
-* A security group for the bastion limited to the supplied IP ranges
-* A DNS entry in the supplied public zone for the bastion
 * Standard tags for all resources
 * A notification (in the form of an S3 object) in an S3 bucket on VPC creation
   (optional)
 
-![Diagram of infrastructure managed by this module](/docs/architecture.png?raw=true)
+![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/master/docs/architecture.png)
 
 Usage
 -----
@@ -26,7 +23,7 @@ To use the module, include something like the following in your terraform config
 
 ```hcl-terraform
 module "base-network" {
-  source = "git@github.com:tobyclemson/terraform-aws-base-networking.git//src"
+  source = "git@github.com:tobyclemson/terraform-aws-base-networking.git"
   
   vpc_cidr = "10.0.0.0/16"
   region = "eu-west-2"
@@ -35,12 +32,6 @@ module "base-network" {
   component = "important-component"
   deployment_identifier = "production"
   
-  bastion_ami = "ami-bb373ddf"
-  bastion_ssh_public_key_path = "~/.ssh/id_rsa.pub"
-  bastion_ssh_allow_cidrs = "100.10.10.0/24,200.20.0.0/16"
-  
-  domain_name = "example.com"
-  public_zone_id = "Z1WA3EVJBXSQ2V"
   private_zone_id = "Z3CVA9QD5NHSW3"
 }
 ```
