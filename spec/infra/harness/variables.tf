@@ -12,3 +12,5 @@ variable "dependencies" {}
 variable "private_zone_id" {}
 
 variable "infrastructure_events_bucket" {}
+
+variable "include_nat_gateway" {}

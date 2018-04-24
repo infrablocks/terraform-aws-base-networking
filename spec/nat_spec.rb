@@ -16,22 +16,45 @@ describe 'NAT' do
 
   let(:nat_public_ip_output) {output_for(:harness, 'nat_public_ip')}
 
-  subject do
+  def nat_gateways
     response = ec2_client.describe_nat_gateways(
         {
             filter: [{name: 'vpc-id', values: [created_vpc.id]}]
         })
-    response.nat_gateways.single_resource(created_vpc.id)
+    response.nat_gateways.select { |n| n.state == 'available' }
   end
 
-  it 'resides in the first public subnet' do
-    expect(subject.subnet_id).to(eq(first_public_subnet.id))
+  context 'when include_nat_gateway is yes' do
+    subject do
+      nat_gateways.single_resource(created_vpc.id)
+    end
+
+    before(:all) do
+      reprovision(include_nat_gateway: 'yes')
+    end
+
+    it 'resides in the first public subnet' do
+      expect(subject.subnet_id).to(eq(first_public_subnet.id))
+    end
+
+    it 'associates an EIP and exposes as an output' do
+      public_ip = nat_public_ip_output
+
+      expect(subject.nat_gateway_addresses.map(&:public_ip))
+          .to(include(public_ip))
+    end
   end
 
-  it 'associates an EIP and exposes as an output' do
-    public_ip = nat_public_ip_output
+  context 'when include_nat_gateway is no' do
+    before(:all) do
+      reprovision(include_nat_gateway: 'no')
+    end
 
-    expect(subject.nat_gateway_addresses.map(&:public_ip))
-        .to(include(public_ip))
+    it 'does not create a NAT gateway' do
+      expect(nat_gateways).to(be_empty)
+    end
+    it 'does not output a NAT EIP' do
+      expect(nat_public_ip_output).to(eq(''))
+    end
   end
 end

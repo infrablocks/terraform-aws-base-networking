@@ -15,4 +15,6 @@ module "base_network" {
   private_zone_id = "${var.private_zone_id}"
 
   infrastructure_events_bucket = "${var.infrastructure_events_bucket}"
+
+  include_nat_gateway = "${var.include_nat_gateway}"
 }

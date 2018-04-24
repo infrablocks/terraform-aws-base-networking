@@ -1,3 +1,9 @@
+## 0.2.1 (Unreleased)
+
+IMPROVEMENTS:
+
+* Make NAT gateway optional.
+
 ## 0.1.17 (December 28th, 2017)
 
 BACKWARDS INCOMPATIBILITIES / NOTES:

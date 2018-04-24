@@ -50,5 +50,5 @@ output "private_route_table_id" {
 
 output "nat_public_ip" {
   description = "The EIP attached to the NAT."
-  value = "${aws_eip.nat.public_ip}"
+  value = "${element(concat(aws_eip.nat.*.public_ip, list("")), 0)}"
 }

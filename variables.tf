@@ -32,6 +32,11 @@ variable "private_zone_id" {
   description = "The ID of the private Route 53 zone."
 }
 
+variable "include_nat_gateway" {
+  description = "Whether or not to deploy a NAT gateway for outbound Internet connectivity."
+  default = "yes"
+}
+
 variable "include_lifecycle_events" {
   description = "Whether or not to notify via S3 of a created VPC."
   default = "yes"
