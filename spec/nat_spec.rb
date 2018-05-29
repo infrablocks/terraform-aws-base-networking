@@ -24,6 +24,19 @@ describe 'NAT' do
     response.nat_gateways.select { |n| n.state == 'available' }
   end
 
+  context 'when include_nat_gateway is no' do
+    before(:all) do
+      reprovision(include_nat_gateway: 'no')
+    end
+
+    it 'does not create a NAT gateway' do
+      expect(nat_gateways).to(be_empty)
+    end
+    it 'does not output a NAT EIP' do
+      expect(nat_public_ip_output).to(eq(''))
+    end
+  end
+
   context 'when include_nat_gateway is yes' do
     subject do
       nat_gateways.single_resource(created_vpc.id)
@@ -42,19 +55,6 @@ describe 'NAT' do
 
       expect(subject.nat_gateway_addresses.map(&:public_ip))
           .to(include(public_ip))
-    end
-  end
-
-  context 'when include_nat_gateway is no' do
-    before(:all) do
-      reprovision(include_nat_gateway: 'no')
-    end
-
-    it 'does not create a NAT gateway' do
-      expect(nat_gateways).to(be_empty)
-    end
-    it 'does not output a NAT EIP' do
-      expect(nat_public_ip_output).to(eq(''))
     end
   end
 end

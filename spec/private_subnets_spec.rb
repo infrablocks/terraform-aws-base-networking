@@ -22,7 +22,10 @@ describe 'Private' do
   let :nat_gateway do
     response = ec2_client.describe_nat_gateways(
         {
-            filter: [{name: 'vpc-id', values: [created_vpc.id]}]
+            filter: [
+                {name: 'vpc-id', values: [created_vpc.id]},
+                {name: 'state', values: ['available']}
+            ]
         })
     response.nat_gateways.single_resource(created_vpc.id)
   end
