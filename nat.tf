@@ -2,6 +2,12 @@ resource "aws_eip" "nat" {
   count = "${var.include_nat_gateway == "yes" ? 1 : 0}"
 
   vpc = true
+
+  tags {
+    Name = "eip-nat-${var.component}-${var.deployment_identifier}"
+    Component = "${var.component}"
+    DeploymentIdentifier = "${var.deployment_identifier}"
+  }
 }
 
 resource "aws_nat_gateway" "base" {
