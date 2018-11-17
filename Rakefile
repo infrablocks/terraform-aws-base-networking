@@ -55,13 +55,13 @@ namespace :version do
     next_tag = latest_tag.send("#{args.type}!")
     repo.add_tag(next_tag.to_s)
     repo.push('origin', 'master', tags: true)
-    echo "Bumped version to #{next_tag}."
+    puts "Bumped version to #{next_tag}."
   end
 
   task :release do
     next_tag = latest_tag.release!
     repo.add_tag(next_tag.to_s)
     repo.push('origin', 'master', tags: true)
-    echo "Released version #{next_tag}."
+    puts "Released version #{next_tag}."
   end
 end
