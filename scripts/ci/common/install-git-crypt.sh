@@ -4,7 +4,7 @@
 set -e
 set -o pipefail
 
-GIT_CRYPT_VERSION="0.5.0"
+GIT_CRYPT_VERSION="0.6.0"
 
 apt-get update
 apt-get install -y --no-install-recommends git ssh
