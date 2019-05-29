@@ -4,7 +4,7 @@ resource "aws_subnet" "private" {
   cidr_block = "${cidrsubnet(var.vpc_cidr, 8, count.index + length(split(",", var.availability_zones)) + var.private_subnets_offset)}"
   availability_zone = "${element(split (",", var.availability_zones), count.index)}"
 
-  tags {
+  tags = {
     Name = "private-subnet-${var.component}-${var.deployment_identifier}-${element(split (",", var.availability_zones) ,count.index)}"
     Component = "${var.component}"
     DeploymentIdentifier = "${var.deployment_identifier}"
@@ -15,7 +15,7 @@ resource "aws_subnet" "private" {
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.base.id}"
 
-  tags {
+  tags = {
     Name = "private-routetable-${var.component}-${var.deployment_identifier}"
     Component = "${var.component}"
     DeploymentIdentifier = "${var.deployment_identifier}"
