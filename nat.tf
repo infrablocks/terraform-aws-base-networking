@@ -3,7 +3,7 @@ resource "aws_eip" "nat" {
 
   vpc = true
 
-  tags {
+  tags = {
     Name = "eip-nat-${var.component}-${var.deployment_identifier}"
     Component = "${var.component}"
     DeploymentIdentifier = "${var.deployment_identifier}"
