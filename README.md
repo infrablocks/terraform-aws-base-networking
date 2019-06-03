@@ -16,6 +16,12 @@ The network consists of:
 
 ![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/master/docs/architecture.png)
 
+### Terraform versions
+
+Terraform 0.12. Pin module version to `>= 0.6.0`.
+
+Terraform 0.11. All 0.x module versions are compatible.
+
 Usage
 -----
 
