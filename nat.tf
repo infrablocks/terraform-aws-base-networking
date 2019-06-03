@@ -19,4 +19,10 @@ resource "aws_nat_gateway" "base" {
   depends_on = [
     "aws_internet_gateway.base_igw"
   ]
+
+  tags = {
+    Name = "nat-${var.component}-${var.deployment_identifier}"
+    Component = "${var.component}"
+    DeploymentIdentifier = "${var.deployment_identifier}"
+  }
 }
