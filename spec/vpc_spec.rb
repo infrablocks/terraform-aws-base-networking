@@ -80,7 +80,7 @@ describe 'VPC' do
 
   context 'when include_route53_zone_association is no' do
     before(:all) do
-      reprovision(include_route53_zone_association: 'no')
+      reprovision(include_route53_zone_association: 'no', private_zone_id: '')
     end
 
     it 'does not associate the supplied private hosted with the VPC' do
