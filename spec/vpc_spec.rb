@@ -68,7 +68,23 @@ describe 'VPC' do
     expect(actual_count).to(eq(expected_count))
   end
 
-  it 'associates the supplied private hosted with the VPC' do
-    expect(private_hosted_zone.vp_cs.map(&:vpc_id)).to(include(subject.id))
+  context 'when include_route53_zone_association is yes' do
+    before(:all) do
+      reprovision(include_route53_zone_association: 'yes')
+    end
+
+    it 'associates the supplied private hosted with the VPC' do
+      expect(private_hosted_zone.vp_cs.map(&:vpc_id)).to(include(subject.id))
+    end
+  end
+
+  context 'when include_route53_zone_association is no' do
+    before(:all) do
+      reprovision(include_route53_zone_association: 'no')
+    end
+
+    it 'does not associate the supplied private hosted with the VPC' do
+      expect(private_hosted_zone.vp_cs.map(&:vpc_id)).not_to(include(subject.id))
+    end
   end
 end

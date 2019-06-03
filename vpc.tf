@@ -11,6 +11,7 @@ resource "aws_vpc" "base" {
 }
 
 resource "aws_route53_zone_association" "base" {
+  count = "${var.include_route53_zone_association == "yes" ? 1 : 0}"
   zone_id = "${var.private_zone_id}"
   vpc_id = "${aws_vpc.base.id}"
 }

@@ -28,6 +28,11 @@ variable "private_subnets_offset" {
   default = 0
 }
 
+variable "include_route53_zone_association" {
+  description = "Whether or not to associate the VPC with a zone id."
+  default = "yes"
+}
+
 variable "private_zone_id" {
   description = "The ID of the private Route 53 zone."
 }
