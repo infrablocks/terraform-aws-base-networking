@@ -55,7 +55,7 @@ module "base-network" {
 | private_subnets_offset           | The number of /24s to offset the private subnets in the VPC CIDR          | 0       | yes                                        |
 | component                        | The component this network will contain                                   | -       | yes                                        |
 | deployment_identifier            | An identifier for this instantiation                                      | -       | yes                                        |
-| dependencies                     | A comma separated list of components depended on my this component        | -       | no                                         |
+| dependencies                     | A comma separated list of components depended on by this component        | -       | no                                         |
 | include_route53_zone_association | Whether or not to associate VPC with the private Route 53 zone            | yes     | no                                         |
 | private_zone_id                  | The ID of the private Route 53 zone                                       | -       | if include_route53_zone_association is yes |
 | include_nat_gateway              | Whether or not to deploy a NAT gateway for outbound Internet connectivity | yes     | yes                                        |
