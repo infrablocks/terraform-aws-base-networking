@@ -10,7 +10,7 @@ describe 'NAT' do
     vpc("vpc-#{component}-#{dep_id}")
   end
   let :first_public_subnet do
-    zone = availability_zones.split(',').first
+    zone = availability_zones.first
     subnet("public-subnet-#{component}-#{dep_id}-#{zone}")
   end
 
@@ -26,7 +26,7 @@ describe 'NAT' do
 
   context 'when include_nat_gateway is no' do
     before(:all) do
-      reprovision(include_nat_gateway: 'no')
+      reprovision(include_nat_gateway: "no")
     end
 
     it 'does not create a NAT gateway' do
@@ -43,7 +43,7 @@ describe 'NAT' do
     end
 
     before(:all) do
-      reprovision(include_nat_gateway: 'yes')
+      reprovision(include_nat_gateway: "yes")
     end
 
     it 'resides in the first public subnet' do

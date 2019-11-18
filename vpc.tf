@@ -6,7 +6,7 @@ resource "aws_vpc" "base" {
     Name = "vpc-${var.component}-${var.deployment_identifier}"
     Component = var.component
     DeploymentIdentifier = var.deployment_identifier
-    Dependencies = var.dependencies
+    Dependencies = join(",", var.dependencies)
   }
 }
 

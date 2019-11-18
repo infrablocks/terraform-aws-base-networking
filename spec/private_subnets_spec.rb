@@ -12,7 +12,7 @@ describe 'Private' do
     vpc("vpc-#{component}-#{dep_id}")
   end
   let :private_subnets do
-    availability_zones.split(',').map do |zone|
+    availability_zones.map do |zone|
       subnet("private-subnet-#{component}-#{dep_id}-#{zone}")
     end
   end
@@ -58,7 +58,7 @@ describe 'Private' do
     end
 
     it 'distributes subnets across availability zones' do
-      availability_zones.split(',').map do |zone|
+      availability_zones.map do |zone|
         expect(private_subnets.map(&:availability_zone)).to(include(zone))
       end
     end
@@ -78,16 +78,17 @@ describe 'Private' do
     end
 
     it 'exposes the private subnet IDs as an output' do
-      expected_private_subnet_ids = private_subnets.map(&:id).join(',')
-      actual_private_subnet_ids = output_for(:harness, 'private_subnet_ids')
+      expected_private_subnet_ids = private_subnets.map(&:id)
+      actual_private_subnet_ids =
+          output_for(:harness, 'private_subnet_ids', parse: true)
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
 
     it 'exposes the private subnet CIDR blocks as an output' do
-      expected_private_subnet_ids = private_subnets.map(&:cidr_block).join(',')
+      expected_private_subnet_ids = private_subnets.map(&:cidr_block)
       actual_private_subnet_ids =
-          output_for(:harness, 'private_subnet_cidr_blocks')
+          output_for(:harness, 'private_subnet_cidr_blocks', parse: true)
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end

@@ -9,16 +9,20 @@ work_directory: 'build'
 configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')}"
 
 vpc_cidr: '10.1.0.0/16'
-availability_zones: 'eu-west-2a,eu-west-2b'
+availability_zones:
+  - 'eu-west-2a'
+  - 'eu-west-2b'
 
 public_subnets_offset: 1
 private_subnets_offset: 2
 
-dependencies: 'other,stuff'
+dependencies:
+  - 'other'
+  - 'stuff'
 
 private_zone_id: 'Z2CDAFD23Q10HO'
 
 infrastructure_events_bucket: "tobyclemson-open-source"
 
-include_route53_zone_association: 'yes'
-include_nat_gateway: 'yes'
+include_route53_zone_association: "yes"
+include_nat_gateway: "yes"

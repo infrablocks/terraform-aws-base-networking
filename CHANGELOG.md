@@ -1,4 +1,16 @@
-## 0.2.1 (Unreleased)
+## 1.0.0 (18th November 2019)
+
+IMPROVEMENTS
+
+* Make use of more recent module improvements such as list inputs and outputs.
+* Fully convert to HCL 2.
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* The `availability_zones` and `dependencies` inputs are now lists of strings.
+* The `availability_zones`, `public_subnet_ids`, `public_subnet_cidr_blocks`,
+  `private_subnet_ids` and `private_subnet_cidr_blocks` outputs are now all 
+  lists of strings.
 
 ## 0.2.0 (25th April 2018)
 

@@ -18,8 +18,8 @@ shared_context :terraform do
     TerraformModule.configuration
   end
 
-  def output_for(role, name)
-    TerraformModule.output_for(role, name)
+  def output_for(role, name, opts = {})
+    TerraformModule.output_for(role, name, opts)
   end
 
   def reprovision(overrides = nil)

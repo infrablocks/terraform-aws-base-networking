@@ -21,7 +21,7 @@ describe 'VPC' do
   it {should exist}
   it {should have_tag('Component').value(component)}
   it {should have_tag('DeploymentIdentifier').value(dep_id)}
-  it {should have_tag('Dependencies').value(dependencies)}
+  it {should have_tag('Dependencies').value(dependencies.join(','))}
 
   its(:cidr_block) {should eq vpc_cidr}
 
@@ -56,13 +56,14 @@ describe 'VPC' do
 
   it 'exposes the availability zones as an output' do
     expected_availability_zones = availability_zones
-    actual_availability_zones = output_for(:harness, 'availability_zones')
+    actual_availability_zones =
+        output_for(:harness, 'availability_zones', parse: true)
 
     expect(actual_availability_zones).to(eq(expected_availability_zones))
   end
 
   it 'exposes the number of availability zones as an output' do
-    expected_count = availability_zones.split(',').count.to_s
+    expected_count = availability_zones.count.to_s
     actual_count = output_for(:harness, 'number_of_availability_zones')
 
     expect(actual_count).to(eq(expected_count))
@@ -70,7 +71,7 @@ describe 'VPC' do
 
   context 'when include_route53_zone_association is yes' do
     before(:all) do
-      reprovision(include_route53_zone_association: 'yes')
+      reprovision(include_route53_zone_association: "yes")
     end
 
     it 'associates the supplied private hosted with the VPC' do
@@ -80,7 +81,7 @@ describe 'VPC' do
 
   context 'when include_route53_zone_association is no' do
     before(:all) do
-      reprovision(include_route53_zone_association: 'no', private_zone_id: '')
+      reprovision(include_route53_zone_association: "no", private_zone_id: '')
     end
 
     it 'does not associate the supplied private hosted with the VPC' do
