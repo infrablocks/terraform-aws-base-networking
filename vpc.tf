@@ -24,9 +24,9 @@ resource "aws_s3_bucket_object" "vpc_lifecycle_event" {
   count = var.include_lifecycle_events == "yes" ? 1 : 0
 
   depends_on = [
-    "aws_subnet.public",
-    "aws_subnet.private",
-    "aws_route_table.public",
-    "aws_route_table.private"
+    aws_subnet.public,
+    aws_subnet.private,
+    aws_route_table.public,
+    aws_route_table.private
   ]
 }

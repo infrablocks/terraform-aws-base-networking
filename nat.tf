@@ -17,7 +17,7 @@ resource "aws_nat_gateway" "base" {
   subnet_id = aws_subnet.public[0].id
 
   depends_on = [
-    "aws_internet_gateway.base_igw"
+    aws_internet_gateway.base_igw
   ]
 
   tags = {
