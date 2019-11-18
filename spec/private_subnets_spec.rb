@@ -64,13 +64,13 @@ describe 'Private' do
     end
 
     it 'uses unique /24 networks relative to the VPC CIDR for each subnet' do
-      cidr = NetAddr::CIDR.create(vpc_cidr)
+      cidr = NetAddr::IPv4Net.parse(vpc_cidr)
 
       private_subnets.each do |subnet|
-        subnet_cidr = NetAddr::CIDR.create(subnet.cidr_block)
+        subnet_cidr = NetAddr::IPv4Net.parse(subnet.cidr_block)
 
-        expect(subnet_cidr.netmask).to(eq('/24'))
-        expect(cidr.contains?(subnet_cidr)).to(be(true))
+        expect(subnet_cidr.netmask.cmp(NetAddr::Mask32.parse('/24'))).to(eq(0))
+        expect(cidr.rel(subnet_cidr)).to(eq(1))
       end
 
       expect(private_subnets.map(&:cidr_block).uniq.length)
