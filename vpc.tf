@@ -18,7 +18,7 @@ resource "aws_route53_zone_association" "base" {
 
 resource "aws_s3_bucket_object" "vpc_lifecycle_event" {
   bucket = var.infrastructure_events_bucket
-  key = "vpc-existence/${aws_vpc.base.id}"
+  key = "vpc-existence/${local.current_account_id}/${aws_vpc.base.id}"
   content = aws_vpc.base.id
 
   count = var.include_lifecycle_events == "yes" ? 1 : 0

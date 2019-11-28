@@ -29,7 +29,7 @@ describe 'VPC' do
     expected_vpc_id = subject.vpc_id
 
     expect(s3_bucket(infrastructure_events_bucket))
-        .to(have_object("vpc-existence/#{expected_vpc_id}"))
+        .to(have_object("vpc-existence/#{account.account}/#{expected_vpc_id}"))
   end
 
   it 'exposes the VPC ID as an output' do
