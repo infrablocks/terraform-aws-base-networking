@@ -15,7 +15,5 @@ module "base_network" {
   include_route53_zone_association = var.include_route53_zone_association
   private_zone_id = var.private_zone_id
 
-  infrastructure_events_bucket = var.infrastructure_events_bucket
-
   include_nat_gateway = var.include_nat_gateway
 }

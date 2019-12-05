@@ -1,6 +1,22 @@
+## 2.0.0 (5th December 2019)
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* The `infrastructure_events_bucket` variable, the `include_lifecycle_events` 
+  variable and the `aws_s3_bucket_object` representing the VPC lifecycle event 
+  have been removed from this module and are now encapsulated into the 
+  `terraform-aws-vpc-lifecycle-event` module. This is to allow the lifecycle 
+  events bucket to be in a different account to the VPC.
+
+## 1.1.0 (28th November 2019)
+
+BUG FIXES:
+
+* Upgrade to avoid vulnerability in test library
+
 ## 1.0.0 (18th November 2019)
 
-IMPROVEMENTS
+ENHANCEMENTS:
 
 * Make use of more recent module improvements such as list inputs and outputs.
 * Fully convert to HCL 2.
@@ -14,7 +30,7 @@ BACKWARDS INCOMPATIBILITIES / NOTES:
 
 ## 0.2.0 (25th April 2018)
 
-IMPROVEMENTS:
+ENHANCEMENTS:
 
 * Make NAT gateway optional.
 
@@ -25,7 +41,7 @@ BACKWARDS INCOMPATIBILITIES / NOTES:
 * The configuration directory has changed from `<repo>/src` to `<repo>` to
   satisfy the terraform standard module structure.
   
-IMPROVEMENTS:
+ENHANCEMENTS:
 
 * All variables and outputs now have descriptions to satisfy the terraform
   standard module structure. 

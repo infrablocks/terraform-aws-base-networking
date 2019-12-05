@@ -53,14 +53,3 @@ variable "include_nat_gateway" {
   type = string
   default = "yes"
 }
-
-variable "include_lifecycle_events" {
-  description = "Whether or not to notify via S3 of a created VPC."
-  type = string
-  default = "yes"
-}
-variable "infrastructure_events_bucket" {
-  description = "S3 bucket in which to put VPC creation events. Required when `include_lifecycle_events` is 'yes'."
-  type = string
-  default = ""
-}

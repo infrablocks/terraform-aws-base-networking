@@ -25,13 +25,6 @@ describe 'VPC' do
 
   its(:cidr_block) {should eq vpc_cidr}
 
-  it 'writes the VPC ID to the provided infrastructure events bucket' do
-    expected_vpc_id = subject.vpc_id
-
-    expect(s3_bucket(infrastructure_events_bucket))
-        .to(have_object("vpc-existence/#{account.account}/#{expected_vpc_id}"))
-  end
-
   it 'exposes the VPC ID as an output' do
     expected_vpc_id = subject.vpc_id
     actual_vpc_id = output_for(:harness, 'vpc_id')
