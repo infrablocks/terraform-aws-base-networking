@@ -37,7 +37,7 @@ variable "private_subnets_offset" {
 }
 
 variable "include_route53_zone_association" {
-  description = "Whether or not to associate the VPC with a zone id."
+  description = "Whether or not to associate the VPC with a zone id (\"yes\" or \"no\")."
   type = string
   default = "yes"
 }
@@ -49,7 +49,7 @@ variable "private_zone_id" {
 }
 
 variable "include_nat_gateway" {
-  description = "Whether or not to deploy a NAT gateway for outbound Internet connectivity."
+  description = "Whether or not to deploy a NAT gateway for outbound Internet connectivity (\"yes\" or \"no\")."
   type = string
   default = "yes"
 }

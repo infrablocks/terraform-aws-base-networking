@@ -11,8 +11,6 @@ The network consists of:
 * Routes from the public subnets to the Internet gateway
 * Routes from the private subnets to the NAT
 * Standard tags for all resources
-* A notification (in the form of an S3 object) in an S3 bucket on VPC creation
-  (optional)
 
 ![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/master/docs/architecture.png)
 
@@ -30,7 +28,7 @@ To use the module, include something like the following in your terraform config
 ```hcl-terraform
 module "base-network" {
   source  = "infrablocks/base-networking/aws"
-  version = "0.1.20"
+  version = "2.3.0"
   
   vpc_cidr = "10.0.0.0/16"
   region = "eu-west-2"
@@ -46,22 +44,19 @@ module "base-network" {
 
 ### Inputs
 
-| Name                             | Description                                                               | Default | Required                                    |
-|----------------------------------|---------------------------------------------------------------------------|:-------:|:-------------------------------------------:|
-| vpc_cidr                         | The CIDR to use for the VPC                                               | -       | yes                                         |
-| region                           | The region into which to deploy the VPC                                   | -       | yes                                         |
-| availability_zones               | The availability zones for which to add subnets                           | -       | yes                                         |
-| public_subnets_offset            | The number of /24s to offset the public subnets in the VPC CIDR           | 0       | yes                                         |
-| private_subnets_offset           | The number of /24s to offset the private subnets in the VPC CIDR          | 0       | yes                                         |
-| component                        | The component this network will contain                                   | -       | yes                                         |
-| deployment_identifier            | An identifier for this instantiation                                      | -       | yes                                         |
-| dependencies                     | The components depended on by this component                              | -       | no                                          |
-| include_route53_zone_association | Whether or not to associate VPC with the private Route 53 zone            | true    | no                                          |
-| private_zone_id                  | The ID of the private Route 53 zone                                       | -       | if include_route53_zone_association is true |
-| include_nat_gateway              | Whether or not to deploy a NAT gateway for outbound Internet connectivity | true    | yes                                         |
-| include_lifecycle_events         | Whether or not to notify via S3 of a created VPC                          | true    | yes                                         |
-| infrastructure_events_bucket     | S3 bucket in which to put VPC creation events                             | -       | if include_lifecycle_events is true         |
-
+| Name                             | Description                                                                               | Default | Required                                     |
+|----------------------------------|-------------------------------------------------------------------------------------------|:-------:|:--------------------------------------------:|
+| vpc_cidr                         | The CIDR to use for the VPC                                                               | -       | yes                                          |
+| region                           | The region into which to deploy the VPC                                                   | -       | yes                                          |
+| availability_zones               | The availability zones for which to add subnets                                           | -       | yes                                          |
+| public_subnets_offset            | The number of /24s to offset the public subnets in the VPC CIDR                           | 0       | yes                                          |
+| private_subnets_offset           | The number of /24s to offset the private subnets in the VPC CIDR                          | 0       | yes                                          |
+| component                        | The component this network will contain                                                   | -       | yes                                          |
+| deployment_identifier            | An identifier for this instantiation                                                      | -       | yes                                          |
+| dependencies                     | The components depended on by this component                                              | -       | no                                           |
+| include_route53_zone_association | Whether or not to associate VPC with the private Route 53 zone ("yes" or "no")            | "yes"   | no                                           |
+| private_zone_id                  | The ID of the private Route 53 zone                                                       | -       | if include_route53_zone_association is "yes" |
+| include_nat_gateway              | Whether or not to deploy a NAT gateway for outbound Internet connectivity ("yes" or "no") | "yes"   | yes                                          |
 
 ### Outputs
 
