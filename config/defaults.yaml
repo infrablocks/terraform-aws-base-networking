@@ -23,4 +23,4 @@ dependencies:
 private_zone_id: 'Z2CDAFD23Q10HO'
 
 include_route53_zone_association: "yes"
-include_nat_gateway: "yes"
+include_nat_gateways: "yes"

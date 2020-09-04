@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'netaddr'
 
 describe 'Public' do
-  let(:component) {vars.component}
-  let(:dep_id) {vars.deployment_identifier}
+  let(:component) { vars.component }
+  let(:dep_id) { vars.deployment_identifier }
 
-  let(:vpc_cidr) {vars.vpc_cidr}
-  let(:availability_zones) {vars.availability_zones}
+  let(:vpc_cidr) { vars.vpc_cidr }
+  let(:availability_zones) { vars.availability_zones }
 
   let :created_vpc do
     vpc("vpc-#{component}-#{dep_id}")
@@ -16,8 +16,10 @@ describe 'Public' do
       subnet("public-subnet-#{component}-#{dep_id}-#{zone}")
     end
   end
-  let :public_route_table do
-    route_table("public-routetable-#{component}-#{dep_id}")
+  let :public_route_tables do
+    availability_zones.map do |zone|
+      route_table("public-routetable-#{component}-#{dep_id}-#{zone}")
+    end
   end
 
   context 'subnets' do
@@ -30,7 +32,7 @@ describe 'Public' do
     it 'has a DeploymentIdentifier tag on each subnet' do
       public_subnets.each do |subnet|
         expect(subnet).to(have_tag('DeploymentIdentifier')
-                              .value(dep_id))
+            .value(dep_id))
       end
     end
 
@@ -78,47 +80,60 @@ describe 'Public' do
     it 'exposes the public subnet CIDR blocks as an output' do
       expected_public_subnet_ids = public_subnets.map(&:cidr_block)
       actual_public_subnet_ids =
-          output_for(:harness, 'public_subnet_cidr_blocks', parse: true)
+          output_for(
+              :harness, 'public_subnet_cidr_blocks', parse: true)
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
   end
 
-  context 'route table' do
-    it 'has a Component tag' do
-      expect(public_route_table).to(have_tag('Component').value(component))
+  context 'route tables' do
+    it 'has a Component tag on each route table' do
+      public_route_tables.each do |route_table|
+        expect(route_table).to(have_tag('Component').value(component))
+      end
     end
 
-    it 'has a DeploymentIdentifier' do
-      expect(public_route_table).to(have_tag('DeploymentIdentifier')
-                                        .value(dep_id))
+    it 'has a DeploymentIdentifier on each route table' do
+      public_route_tables.each do |route_table|
+        expect(route_table).to(have_tag('DeploymentIdentifier')
+            .value(dep_id))
+      end
     end
 
-    it 'has a Tier of public' do
-      expect(public_route_table).to(have_tag('Tier').value('public'))
+    it 'has a Tier of public on each route table' do
+      public_route_tables.each do |route_table|
+        expect(route_table).to(have_tag('Tier')
+            .value('public'))
+      end
     end
 
-    it 'is associated to the created VPC' do
-      expect(public_route_table.vpc_id).to(eq(created_vpc.id))
+    it 'associates each route table to the created VPC' do
+      public_route_tables.each do |route_table|
+        expect(route_table.vpc_id).to(eq(created_vpc.id))
+      end
     end
 
     it 'has a route to the internet gateway for all internet traffic' do
       internet_gateway =
           igw("igw-#{component}-#{dep_id}")
-      expect(public_route_table)
-          .to(have_route('0.0.0.0/0').target(gateway: internet_gateway.id))
-    end
-
-    it 'is associated to each subnet' do
-      public_subnets.each do |subnet|
-        expect(public_route_table).to(have_subnet(subnet.id))
+      public_route_tables.each do |route_table|
+        expect(route_table)
+            .to(have_route('0.0.0.0/0').target(gateway: internet_gateway.id))
       end
     end
 
-    it 'exposes the public route table as an output' do
-      public_route_table_id = output_for(:harness, 'public_route_table_id')
+    it 'associates each route table to each subnet' do
+      public_route_tables.zip(public_subnets)
+          .each do |route_table, subnet|
+        expect(route_table).to(have_subnet(subnet.id))
+      end
+    end
 
-      expect(public_route_table_id).to(eq(public_route_table.id))
+    it 'exposes the public route tables as an output' do
+      expect(output_for(
+          :harness, 'public_route_table_ids', parse: true))
+          .to(eq(public_route_tables.map(&:id)))
     end
   end
 end

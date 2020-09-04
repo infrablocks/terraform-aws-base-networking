@@ -20,4 +20,4 @@ variable "dependencies" {
 variable "include_route53_zone_association" {}
 variable "private_zone_id" {}
 
-variable "include_nat_gateway" {}
+variable "include_nat_gateways" {}

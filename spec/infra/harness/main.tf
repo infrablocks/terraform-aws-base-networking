@@ -15,5 +15,5 @@ module "base_network" {
   include_route53_zone_association = var.include_route53_zone_association
   private_zone_id = var.private_zone_id
 
-  include_nat_gateway = var.include_nat_gateway
+  include_nat_gateways = var.include_nat_gateways
 }

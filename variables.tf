@@ -48,8 +48,8 @@ variable "private_zone_id" {
   default = ""
 }
 
-variable "include_nat_gateway" {
-  description = "Whether or not to deploy a NAT gateway for outbound Internet connectivity (\"yes\" or \"no\")."
+variable "include_nat_gateways" {
+  description = "Whether or not to deploy NAT gateways in each availability zone for outbound Internet connectivity (\"yes\" or \"no\")."
   type = string
   default = "yes"
 }

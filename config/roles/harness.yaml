@@ -18,4 +18,4 @@ vars:
   private_zone_id: "%{hiera('private_zone_id')}"
 
   include_route53_zone_association: "%{hiera('include_route53_zone_association')}"
-  include_nat_gateway: "%{hiera('include_nat_gateway')}"
+  include_nat_gateways: "%{hiera('include_nat_gateways')}"
