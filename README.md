@@ -7,7 +7,8 @@ A Terraform module for building a base network in AWS.
 
 The network consists of:
 * Public and private subnets for each supplied availability zone
-* A NAT gateway for outbound Internet connectivity
+* A NAT gateway for each supplied availability zone for outbound Internet 
+  connectivity
 * Routes from the public subnets to the Internet gateway
 * Routes from the private subnets to the NAT
 * Standard tags for all resources
@@ -56,7 +57,7 @@ module "base-network" {
 | dependencies                     | The components depended on by this component                                              | -       | no                                           |
 | include_route53_zone_association | Whether or not to associate VPC with the private Route 53 zone ("yes" or "no")            | "yes"   | no                                           |
 | private_zone_id                  | The ID of the private Route 53 zone                                                       | -       | if include_route53_zone_association is "yes" |
-| include_nat_gateway              | Whether or not to deploy a NAT gateway for outbound Internet connectivity ("yes" or "no") | "yes"   | yes                                          |
+| include_nat_gateways             | Whether or not to deploy NAT gateways for outbound Internet connectivity ("yes" or "no")  | "yes"   | yes                                          |
 
 ### Outputs
 
@@ -68,11 +69,11 @@ module "base-network" {
 | number_of_availability_zones | The number of populated availability zones available |
 | public_subnet_ids            | The IDs of the public subnets                        |
 | public_subnet_cidrs          | The CIDRs of the public subnets                      |
-| public_route_table_id        | The ID of the public route table                     |
+| public_route_table_ids       | The IDs of the public route tables                   |
 | private_subnet_ids           | The IDs of the private subnets                       |
 | private_subnet_cidrs         | The CIDRs of the private subnets                     |
-| private_route_table_id       | The ID of the private route table                    |
-| nat_public_ip                | The EIP attached to the NAT                          |
+| private_route_table_ids      | The IDs of the private route tables                  |
+| nat_public_ips               | The EIPs attached to the NAT gateways                |
 
 
 ### Required Permissions
