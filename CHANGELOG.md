@@ -1,3 +1,24 @@
+## 3.0.0 (5th September 2020)
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* Prior to this version, the module created a single NAT gateway routed to by
+  all private subnets. This created a single point of failure in the case of an
+  availability zone outage of the zone in which the NAT gateway resided. The
+  module now creates a NAT gateway per availability zone, which also 
+  necessitates a route table per availability zone. 
+  
+  As a result, applying this version of the module will destroy both the public 
+  and private route tables in the network and then recreate a public and 
+  private route table for each availability zone. Any additional routes added 
+  to the existing route tables must be readded to each of the newly created 
+  route tables.
+  
+  Additionally, where previously single valued `public_route_table_id`, 
+  `private_route_table_id` and `nat_public_ip` outputs were produced, now array
+  valued `public_route_table_ids`, `private_route_table_ids` and 
+  `nat_public_ips` outputs are produced.
+
 ## 2.0.0 (5th December 2019)
 
 BACKWARDS INCOMPATIBILITIES / NOTES:
