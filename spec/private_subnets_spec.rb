@@ -92,7 +92,7 @@ describe 'Private' do
       expected_private_subnet_ids = private_subnets.map(&:id)
       actual_private_subnet_ids =
           output_for(
-              :harness, 'private_subnet_ids', parse: true)
+              :harness, 'private_subnet_ids')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
@@ -101,7 +101,7 @@ describe 'Private' do
       expected_private_subnet_ids = private_subnets.map(&:cidr_block)
       actual_private_subnet_ids =
           output_for(
-              :harness, 'private_subnet_cidr_blocks', parse: true)
+              :harness, 'private_subnet_cidr_blocks')
 
       expect(actual_private_subnet_ids).to(eq(expected_private_subnet_ids))
     end
@@ -150,7 +150,7 @@ describe 'Private' do
 
     it 'exposes the private route table ids as an output' do
       expect(output_for(
-          :harness, 'private_route_table_ids', parse: true))
+          :harness, 'private_route_table_ids'))
           .to(eq(private_route_tables.map(&:id)))
     end
   end

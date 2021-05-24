@@ -50,7 +50,7 @@ describe 'VPC' do
   it 'exposes the availability zones as an output' do
     expected_availability_zones = availability_zones
     actual_availability_zones =
-        output_for(:harness, 'availability_zones', parse: true)
+        output_for(:harness, 'availability_zones')
 
     expect(actual_availability_zones).to(eq(expected_availability_zones))
   end

@@ -1,5 +1,6 @@
 module "base_network" {
-  source = "../../../../"
+  # This makes absolutely no sense. I think there's a bug in terraform.
+  source = "./../../../../../../../"
 
   vpc_cidr = var.vpc_cidr
   region = var.region

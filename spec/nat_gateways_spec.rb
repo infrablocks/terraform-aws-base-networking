@@ -16,7 +16,7 @@ describe 'NAT' do
   end
 
   let :nat_public_ips_output do
-    output_for(:harness, 'nat_public_ips', parse: true)
+    output_for(:harness, 'nat_public_ips')
   end
 
   let :nat_gateways do

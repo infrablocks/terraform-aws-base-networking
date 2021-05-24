@@ -72,7 +72,7 @@ describe 'Public' do
     it 'exposes the public subnet IDs as an output' do
       expected_public_subnet_ids = public_subnets.map(&:id)
       actual_public_subnet_ids =
-          output_for(:harness, 'public_subnet_ids', parse: true)
+          output_for(:harness, 'public_subnet_ids')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
@@ -81,7 +81,7 @@ describe 'Public' do
       expected_public_subnet_ids = public_subnets.map(&:cidr_block)
       actual_public_subnet_ids =
           output_for(
-              :harness, 'public_subnet_cidr_blocks', parse: true)
+              :harness, 'public_subnet_cidr_blocks')
 
       expect(actual_public_subnet_ids).to(eq(expected_public_subnet_ids))
     end
@@ -132,7 +132,7 @@ describe 'Public' do
 
     it 'exposes the public route tables as an output' do
       expect(output_for(
-          :harness, 'public_route_table_ids', parse: true))
+          :harness, 'public_route_table_ids'))
           .to(eq(public_route_tables.map(&:id)))
     end
   end
