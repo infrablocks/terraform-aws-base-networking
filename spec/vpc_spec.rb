@@ -56,7 +56,7 @@ describe 'VPC' do
   end
 
   it 'exposes the number of availability zones as an output' do
-    expected_count = availability_zones.count.to_s
+    expected_count = availability_zones.count
     actual_count = output_for(:harness, 'number_of_availability_zones')
 
     expect(actual_count).to(eq(expected_count))
