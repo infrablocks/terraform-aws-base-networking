@@ -15,12 +15,6 @@ The network consists of:
 
 ![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/master/docs/architecture.png)
 
-### Terraform versions
-
-Terraform 0.12. Pin module version to `>= 0.6.0`.
-
-Terraform 0.11. All 0.x module versions are compatible.
-
 Usage
 -----
 
@@ -42,6 +36,9 @@ module "base-network" {
 }
 ```
 
+See the 
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/base-networking/aws/latest) 
+for more details.
 
 ### Inputs
 
@@ -75,6 +72,10 @@ module "base-network" {
 | private_route_table_ids      | The IDs of the private route tables                  |
 | nat_public_ips               | The EIPs attached to the NAT gateways                |
 
+### Compatibility
+
+This module is compatible with Terraform versions greater than or equal to 
+Terraform 0.14.
 
 ### Required Permissions
 
