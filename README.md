@@ -6,8 +6,9 @@ Terraform AWS Base Networking
 A Terraform module for building a base network in AWS.
 
 The network consists of:
+
 * Public and private subnets for each supplied availability zone
-* A NAT gateway for each supplied availability zone for outbound Internet 
+* A NAT gateway for each supplied availability zone for outbound Internet
   connectivity
 * Routes from the public subnets to the Internet gateway
 * Routes from the private subnets to the NAT
@@ -18,26 +19,27 @@ The network consists of:
 Usage
 -----
 
-To use the module, include something like the following in your terraform configuration:
+To use the module, include something like the following in your terraform
+configuration:
 
 ```hcl-terraform
 module "base-network" {
   source  = "infrablocks/base-networking/aws"
   version = "4.0.0"
-  
-  vpc_cidr = "10.0.0.0/16"
-  region = "eu-west-2"
+
+  vpc_cidr           = "10.0.0.0/16"
+  region             = "eu-west-2"
   availability_zones = ["eu-west-2a", "eu-west-2b"]
-  
-  component = "important-component"
+
+  component             = "important-component"
   deployment_identifier = "production"
-  
+
   private_zone_id = "Z3CVA9QD5NHSW3"
 }
 ```
 
-See the 
-[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/base-networking/aws/latest) 
+See the
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/base-networking/aws/latest)
 for more details.
 
 ### Inputs
@@ -74,7 +76,7 @@ for more details.
 
 ### Compatibility
 
-This module is compatible with Terraform versions greater than or equal to 
+This module is compatible with Terraform versions greater than or equal to
 Terraform 0.14.
 
 ### Required Permissions
@@ -87,7 +89,7 @@ Terraform 0.14.
 * ec2:DescribeRouteTables
 * ec2:DescribeSecurityGroups
 * ec2:DescribeNetworkAcls
-* ec2:DescribeSubnets 
+* ec2:DescribeSubnets
 * ec2:DescribeInternetGateways
 * ec2:DescribeNatGateways
 * ec2:ModifyVpcAttribute
@@ -119,14 +121,13 @@ Terraform 0.14.
 * route53:GetChange
 * route53:GetHostedZone
 
-
 Development
 -----------
 
 ### Machine Requirements
 
-In order for the build to run correctly, a few tools will need to be installed on your
-development machine:
+In order for the build to run correctly, a few tools will need to be installed
+on your development machine:
 
 * Ruby (2.3.1)
 * Bundler
@@ -175,8 +176,8 @@ direnv allow <repository-directory>
 
 ### Running the build
 
-To provision module infrastructure, run tests and then destroy that infrastructure,
-execute:
+To provision module infrastructure, run tests and then destroy that
+infrastructure, execute:
 
 ```bash
 ./go
@@ -205,7 +206,6 @@ To destroy the module prerequisites:
 ```bash
 ./go deployment:prerequisites:destroy[<deployment_identifier>]
 ```
-
 
 ### Common Tasks
 
@@ -243,15 +243,15 @@ openssl aes-256-cbc \
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at 
-https://github.com/infrablocks/terraform-aws-base-networking. 
-This project is intended to be a safe, welcoming space for collaboration, and 
-contributors are expected to adhere to the 
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/infrablocks/terraform-aws-base-networking. This project is
+intended to be a safe, welcoming space for collaboration, and contributors are
+expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 License
 -------
 
-The library is available as open source under the terms of the 
+The library is available as open source under the terms of the
 [MIT License](http://opensource.org/licenses/MIT).
