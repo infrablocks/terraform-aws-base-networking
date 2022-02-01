@@ -14,7 +14,7 @@ The network consists of:
 * Routes from the private subnets to the NAT
 * Standard tags for all resources
 
-![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/master/docs/architecture.png)
+![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-base-networking/main/docs/architecture.png)
 
 Usage
 -----

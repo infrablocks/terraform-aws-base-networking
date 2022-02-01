@@ -32,23 +32,23 @@ workflows:
       - test:
           filters:
             branches:
-              only: [master, /^dependabot.*/]
+              only: [main, /^dependabot.*/]
       - prerelease:
           requires:
             - test
           filters:
             branches:
-              only: master
+              only: main
       - hold:
           type: approval
           requires:
             - prerelease
           filters:
             branches:
-              only: master
+              only: main
       - release:
           requires:
             - hold
           filters:
             branches:
-              only: master
+              only: main
