@@ -137,8 +137,8 @@ describe 'Private' do
     it 'includes a route to the NAT gateway for all internet traffic' do
       private_route_tables.zip(nat_gateways).each do |route_table, nat_gateway|
         expect(route_table)
-            .to(have_route('0.0.0.0/0')
-                .target(gateway: nat_gateway.nat_gateway_id))
+          .to(have_route('0.0.0.0/0')
+                .target(nat: nat_gateway.nat_gateway_id))
       end
     end
 
