@@ -386,7 +386,7 @@ GEM
     aws-sdk-globalaccelerator (1.39.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-glue (1.107.0)
+    aws-sdk-glue (1.108.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-gluedatabrew (1.21.0)
@@ -1315,7 +1315,7 @@ GEM
       excon (~> 0.72)
       rake_factory (~> 0.23)
       sshkey (~> 2.0)
-    rake_dependencies (2.13.0)
+    rake_dependencies (3.1.0)
       hamster (~> 3.0)
       minitar (~> 0.9)
       rake_factory (~> 0.23)
@@ -1335,9 +1335,9 @@ GEM
       colored2 (~> 3.1)
       rake_factory (~> 0.23)
       sshkey (~> 2.0)
-    rake_terraform (1.21.0)
+    rake_terraform (1.22.0)
       colored2 (~> 3.1)
-      rake_dependencies (~> 2.11)
+      rake_dependencies (~> 3.1)
       rake_factory (~> 0.23)
       ruby-terraform (~> 1.4)
     rchardet (1.8.0)
@@ -1400,7 +1400,6 @@ DEPENDENCIES
   nokogiri
   rake
   rake_circle_ci
-  rake_dependencies
   rake_github
   rake_gpg
   rake_ssh
