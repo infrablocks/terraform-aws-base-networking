@@ -1314,7 +1314,7 @@ GEM
     minitest (5.16.1)
     multipart-post (2.1.1)
     net-ssh (7.0.1)
-    netaddr (2.0.5)
+    netaddr (2.0.6)
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
