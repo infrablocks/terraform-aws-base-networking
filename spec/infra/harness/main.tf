@@ -14,7 +14,17 @@ module "base_network" {
   dependencies = var.dependencies
 
   include_route53_zone_association = var.include_route53_zone_association
-  private_zone_id = var.private_zone_id
+  private_zone_id = module.dns_zones.private_zone_id
 
   include_nat_gateways = var.include_nat_gateways
+}
+
+module "dns_zones" {
+  source = "infrablocks/dns-zones/aws"
+  version = "1.0.0"
+
+  domain_name = "infrablocks-ecs-cluster-example.com"
+  private_domain_name = "infrablocks-ecs-cluster-example.net"
+  private_zone_vpc_id = var.private_zone_vpc_id
+  private_zone_vpc_region = var.region
 }
