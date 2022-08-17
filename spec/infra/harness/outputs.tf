@@ -41,3 +41,7 @@ output "private_route_table_ids" {
 output "nat_public_ips" {
   value = module.base_network.nat_public_ips
 }
+
+output "private_zone_id" {
+  value = module.dns_zones.private_zone_id
+}

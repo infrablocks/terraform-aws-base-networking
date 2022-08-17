@@ -8,15 +8,9 @@ describe 'VPC' do
   let(:vpc_cidr) {vars.vpc_cidr}
   let(:availability_zones) {vars.availability_zones}
 
-  let(:private_zone_id) {vars.private_zone_id}
-
   let(:infrastructure_events_bucket) {vars.infrastructure_events_bucket}
 
   subject {vpc("vpc-#{component}-#{dep_id}")}
-
-  let :private_hosted_zone do
-    route53_client.get_hosted_zone({id: private_zone_id})
-  end
 
   it {should exist}
   it {should have_tag('Component').value(component)}
@@ -68,6 +62,9 @@ describe 'VPC' do
     end
 
     it 'associates the supplied private hosted with the VPC' do
+      private_zone_id = output_for(:harness, 'private_zone_id')
+      private_hosted_zone = route53_client.get_hosted_zone({id: private_zone_id})
+
       expect(private_hosted_zone.vp_cs.map(&:vpc_id)).to(include(subject.id))
     end
   end
@@ -78,6 +75,9 @@ describe 'VPC' do
     end
 
     it 'does not associate the supplied private hosted with the VPC' do
+      private_zone_id = output_for(:harness, 'private_zone_id')
+      private_hosted_zone = route53_client.get_hosted_zone({id: private_zone_id})
+
       expect(private_hosted_zone.vp_cs.map(&:vpc_id)).not_to(include(subject.id))
     end
   end
