@@ -1,26 +1,12 @@
 ---
 region: 'eu-west-2'
-
-account_id: "579878096224"
-
-component: 'test'
-
-work_directory: 'build'
-configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')}"
-
-vpc_cidr: '10.1.0.0/16'
 availability_zones:
   - 'eu-west-2a'
   - 'eu-west-2b'
 
-public_subnets_offset: 1
-private_subnets_offset: 2
+vpc_cidr: '10.1.0.0/16'
 
-dependencies:
-  - 'other'
-  - 'stuff'
+component: 'test'
+deployment_identifier: "%{hiera('seed')}"
 
-private_zone_vpc_id: 'vpc-a938ffc0'
-
-include_route53_zone_association: "yes"
-include_nat_gateways: "yes"
+domain_name: "infrablocks-base-networking.example"

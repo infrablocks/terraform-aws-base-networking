@@ -1,5 +1,5 @@
 resource "aws_eip" "nat" {
-  count = var.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
+  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
 
   vpc = true
 
@@ -11,7 +11,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "base" {
-  count = var.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
+  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
 
   allocation_id = element(aws_eip.nat.*.id, count.index)
   subnet_id = element(aws_subnet.public.*.id, count.index)

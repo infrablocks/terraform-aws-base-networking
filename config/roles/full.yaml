@@ -1,0 +1,12 @@
+---
+configuration_directory: "%{cwd}/examples/full"
+state_file: "%{cwd}/state/full.tfstate"
+vars:
+  region: "%{hiera('region')}"
+  availability_zones: "%{hiera('availability_zones')}"
+  vpc_cidr: "%{hiera('vpc_cidr')}"
+
+  component: "%{hiera('component')}"
+  deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  domain_name: "%{hiera('domain_name')}"
