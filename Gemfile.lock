@@ -1295,7 +1295,7 @@ GEM
     awsecrets (1.15.1)
       aws-sdk (>= 2, < 4)
       aws_config (~> 0.1.0)
-    awspec (1.28.1)
+    awspec (1.28.2)
       addressable
       aws-sdk (~> 3)
       awsecrets (~> 1)
