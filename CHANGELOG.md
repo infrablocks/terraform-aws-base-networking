@@ -1,6 +1,6 @@
 ## Unreleased
 
-## 4.0.0 (28th Dec 2022)
+## 5.0.0 (28th Dec 2022)
 
 ENHANCEMENTS
 
