@@ -1,3 +1,15 @@
+## Unreleased
+
+## 4.0.0 (28th Dec 2022)
+
+ENHANCEMENTS
+
+* This module can now be used with version 4 of the AWS provider.
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* This module is now compatible with Terraform 1.0 and higher.
+
 ## 4.0.0 (27th May 2021)
 
 BACKWARDS INCOMPATIBILITIES / NOTES:
