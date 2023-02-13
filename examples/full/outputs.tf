@@ -49,3 +49,7 @@ output "private_route_table_ids" {
 output "nat_public_ips" {
   value = module.base_networking.nat_public_ips
 }
+
+output "internet_gateway_id" {
+  value = module.base_networking.internet_gateway_id
+}
