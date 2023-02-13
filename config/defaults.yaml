@@ -1,0 +1,12 @@
+---
+region: 'eu-west-2'
+availability_zones:
+  - 'eu-west-2a'
+  - 'eu-west-2b'
+
+vpc_cidr: '10.1.0.0/16'
+
+component: 'test'
+deployment_identifier: "%{hiera('seed')}"
+
+domain_name: "infrablocks-base-networking.example"

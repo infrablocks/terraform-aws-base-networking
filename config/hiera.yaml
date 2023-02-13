@@ -1,0 +1,11 @@
+---
+:backends:
+  - "env"
+  - "overrides"
+  - "yaml"
+:logger: "noop"
+:yaml:
+  :datadir: "config"
+:hierarchy:
+  - "roles/%{role}"
+  - "defaults"
