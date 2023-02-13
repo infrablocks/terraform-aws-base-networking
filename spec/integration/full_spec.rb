@@ -114,6 +114,16 @@ describe 'full example' do
       expect(created_igw.internet_gateway_id)
         .to(eq(vpc_igw.internet_gateway_id))
     end
+
+    it 'exposes the IGW ID as an output' do
+      vpc_igw = vpc("vpc-#{component}-#{dep_id}")
+                .internet_gateways.first
+
+      expected_igw_id = vpc_igw.internet_gateway_id
+      actual_igw_id = output(role: :full, name: 'internet_gateway_id')
+
+      expect(actual_igw_id).to(eq(expected_igw_id))
+    end
   end
 
   describe 'NAT gateways' do
