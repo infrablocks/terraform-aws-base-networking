@@ -52,3 +52,8 @@ output "nat_public_ips" {
   description = "The EIPs attached to the NAT gateways."
   value = aws_eip.nat.*.public_ip
 }
+
+output "internet_gateway_id" {
+  description = "The ID of IGW attached to the VPC."
+  value = aws_internet_gateway.base_igw.id
+}
