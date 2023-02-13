@@ -1,5 +1,11 @@
 ## Unreleased
 
+## 5.1.0 (13th Feb 2023)
+
+ENHANCEMENTS
+
+* This module now outputs the ID of the created IGW.
+
 ## 5.0.0 (28th Dec 2022)
 
 ENHANCEMENTS

@@ -75,6 +75,7 @@ for more details.
 | `private_subnet_cidrs`         | The CIDRs of the private subnets.                     |
 | `private_route_table_ids`      | The IDs of the private route tables.                  |
 | `nat_public_ips`               | The EIPs attached to the NAT gateways.                |
+| `internet_gateway_id`          | The ID of the created IGW.                            |
 
 ### Compatibility
 
