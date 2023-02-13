@@ -52,3 +52,8 @@ output "nat_public_ip" {
   description = "The EIP attached to the NAT."
   value = "${element(concat(aws_eip.nat.*.public_ip, list("")), 0)}"
 }
+
+output "internet_gateway_id" {
+  description = "The ID of IGW attached to the VPC."
+  value = aws_internet_gateway.base_igw.id
+}
