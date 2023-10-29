@@ -115,6 +115,7 @@ namespace :secrets do
 
   desc 'Generate all generatable secrets.'
   task generate: %w[
+    directory:ensure
     encryption:passphrase:generate
     keys:deploy:generate
     keys:gpg:generate
