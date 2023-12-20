@@ -1514,7 +1514,7 @@ GEM
     minitar (0.9)
     minitest (5.20.0)
     mutex_m (0.1.2)
-    net-ssh (7.2.0)
+    net-ssh (7.2.1)
     netaddr (2.0.6)
     octokit (8.0.0)
       faraday (>= 1, < 3)
