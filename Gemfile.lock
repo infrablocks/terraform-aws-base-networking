@@ -1625,7 +1625,7 @@ GEM
     mutex_m (0.2.0)
     net-http (0.4.1)
       uri
-    net-ssh (7.2.3)
+    net-ssh (7.3.0)
     netaddr (2.0.6)
     octokit (8.1.0)
       base64
