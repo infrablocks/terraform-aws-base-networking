@@ -18,42 +18,49 @@ describe 'availability zone addition' do
   let(:region) { 'eu-west-1' }
 
   describe 'adding a new availability zone' do
-    it 'does not destroy existing subnets when adding a new availability zone' do
-      # Step 1: Apply with initial set of availability zones
-      initial_state = apply_and_get_state(initial_availability_zones)
+    # Step 1: Apply with initial set of availability zones
+    let(:initial_state) { apply_and_get_state(initial_availability_zones) }
+    # Step 2: Plan with additional availability zone
+    let(:plan_output) { plan_with_azs(updated_availability_zones) }
+    # Parse the plan output to check for destructions
+    let(:plan_json) { JSON.parse(plan_output) }
+    let(:resource_changes) { plan_json['resource_changes'] || [] }
 
+    it 'does not destroy existing resources when adding a new az zone' do
       # Get the initial subnet IDs
-      initial_public_subnet_ids = get_resource_ids(initial_state, 'aws_subnet', 'public')
-      initial_private_subnet_ids = get_resource_ids(initial_state, 'aws_subnet', 'private')
-      initial_nat_gateway_ids = get_resource_ids(initial_state, 'aws_nat_gateway', 'base')
+      initial_public_subnet_ids = get_resource_ids(initial_state, 'aws_subnet',
+                                                   'public')
+      initial_private_subnet_ids = get_resource_ids(initial_state,
+                                                    'aws_subnet', 'private')
+      initial_nat_gateway_ids = get_resource_ids(initial_state,
+                                                 'aws_nat_gateway', 'base')
       initial_eip_ids = get_resource_ids(initial_state, 'aws_eip', 'nat')
-
-      # Step 2: Plan with additional availability zone
-      plan_output = plan_with_azs(updated_availability_zones)
-
-      # Parse the plan output to check for destructions
-      plan_json = JSON.parse(plan_output)
-
-      # Check that no existing resources are being destroyed
-      resource_changes = plan_json['resource_changes'] || []
 
       # Find any destroy actions for our existing resources
       destroyed_resources = resource_changes.select do |change|
+        change_before_id = change['change']['before']['id']
         change['change']['actions'].include?('delete') &&
-          (initial_public_subnet_ids.values.include?(change['change']['before']['id']) ||
-           initial_private_subnet_ids.values.include?(change['change']['before']['id']) ||
-           initial_nat_gateway_ids.values.include?(change['change']['before']['id']) ||
-           initial_eip_ids.values.include?(change['change']['before']['id']))
+          (initial_public_subnet_ids.values.include?(change_before_id) ||
+           initial_private_subnet_ids.values.include?(change_before_id) ||
+           initial_nat_gateway_ids.values.include?(change_before_id) ||
+           initial_eip_ids.values.include?(change_before_id))
       end
 
       # Assert no existing resources are being destroyed
+      destroyed_resource_str = destroyed_resources.map do |r|
+        "#{r['type']}.#{r['name']}"
+      end.join(', ')
       expect(destroyed_resources).to be_empty,
-        "Expected no resources to be destroyed, but found: #{destroyed_resources.map { |r| "#{r['type']}.#{r['name']}" }.join(', ')}"
+                                     'Expected no resources to be destroyed,' \
+                                     "but found: #{destroyed_resource_str}"
+    end
 
+    it 'creates the expected new resources for the additional az zone' do
       # Check that only new resources are being created
       created_resources = resource_changes.select do |change|
         change['change']['actions'].include?('create') &&
-          %w[aws_subnet aws_route_table aws_route_table_association aws_nat_gateway aws_eip].include?(change['type'])
+          %w[aws_subnet aws_route_table aws_route_table_association
+             aws_nat_gateway aws_eip].include?(change['type'])
       end
 
       # We expect exactly 1 new public subnet, 1 new private subnet,
@@ -63,19 +70,15 @@ describe 'availability zone addition' do
         'aws_subnet' => 2, # 1 public + 1 private
         'aws_route_table' => 2, # 1 for public + 1 for private
         'aws_route_table_association' => 2, # 1 for public + 1 for private
-        'aws_route' => 2, # 1 for public internet route + 1 for private NAT route
+        'aws_route' => 2, # 1 for public internet route +1 for private NAT route
         'aws_nat_gateway' => 1,
         'aws_eip' => 1
       }
 
       actual_new_resources = created_resources.group_by { |r| r['type'] }
-        .transform_values(&:count)
+                                              .transform_values(&:count)
 
-      expected_new_resources.each do |resource_type, expected_count|
-        actual_count = actual_new_resources[resource_type] || 0
-        expect(actual_count).to eq(expected_count),
-          "Expected #{expected_count} new #{resource_type} resources, but found #{actual_count}"
-      end
+      expect(actual_new_resources).to eq(expected_new_resources)
     end
   end
 
@@ -87,7 +90,8 @@ describe 'availability zone addition' do
     FileUtils.mkdir_p(test_dir)
 
     # Write the terraform configuration
-    File.write("#{test_dir}/main.tf", generate_terraform_config(availability_zones))
+    File.write("#{test_dir}/main.tf",
+               generate_terraform_config(availability_zones))
 
     # Initialize and apply
     Dir.chdir(test_dir) do
@@ -98,14 +102,15 @@ describe 'availability zone addition' do
       state_output = `terraform show -json`
       JSON.parse(state_output)
     end
-  ensure
+
     # Cleanup is handled by the test framework
   end
 
   def plan_with_azs(availability_zones)
     # Update the configuration with new AZs
     test_dir = Dir.glob('spec/integration/test_runs/*').last
-    File.write("#{test_dir}/main.tf", generate_terraform_config(availability_zones))
+    File.write("#{test_dir}/main.tf",
+               generate_terraform_config(availability_zones))
 
     # Run plan and capture output
     Dir.chdir(test_dir) do
@@ -134,17 +139,16 @@ describe 'availability zone addition' do
 
   def get_resource_ids(state, resource_type, resource_name)
     resources = state['values']['root_module']['child_modules']
-      &.first['resources'] || []
+                &.first&.[]('resources') || []
 
-    resources.select do |r|
+    matching_resources = resources.select do |r|
       r['type'] == resource_type && r['name'] == resource_name
-    end.map do |r|
+    end
+
+    matching_resources.to_h do |r|
       # For for_each resources, use the index key (AZ name) as the key
-      if r['index'].is_a?(String)
-        [r['index'], r['values']['id']]
-      else
-        [r['index'].to_s, r['values']['id']]
-      end
-    end.to_h
+      index_key = r['index'].to_s
+      [index_key, r['values']['id']]
+    end
   end
 end
