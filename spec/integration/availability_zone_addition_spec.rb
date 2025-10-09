@@ -18,6 +18,11 @@ describe 'availability zone addition' do
   let(:region) { 'eu-west-1' }
 
   describe 'adding a new availability zone' do
+
+    after(:context) do
+      destroy_test_run_resources
+    end
+
     # Step 1: Apply with initial set of availability zones
     let(:initial_state) { apply_and_get_state(initial_availability_zones) }
     # Step 2: Plan with additional availability zone
@@ -120,6 +125,17 @@ describe 'availability zone addition' do
       `#{terraform} plan -out=tfplan -json`
       `#{terraform} show -json tfplan > tfplan.json`
       `cat tfplan.json`
+    end
+  end
+
+  def destroy_test_run_resources
+    test_dir = Dir.glob('spec/integration/test_runs/*').last
+
+    terraform = terraform_exe('../../../../')
+
+    # Run plan and capture output
+    Dir.chdir(test_dir) do
+      `#{terraform} destroy -auto-approve`
     end
   end
 
