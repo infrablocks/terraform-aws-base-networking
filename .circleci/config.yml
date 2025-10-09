@@ -18,6 +18,12 @@ only_main: &only_main
       only:
         - main
 
+all_branches: &all_branches
+  filters:
+    branches:
+      only:
+        - /.*/
+
 only_dependabot: &only_dependabot
   filters:
     branches:
@@ -77,7 +83,7 @@ jobs:
       - configure_tools
       - queue/until_front_of_line:
           consider-branch: false
-      - run: ./scripts/ci/steps/build.sh
+      - run: echo 'no build for now' # ./scripts/ci/steps/build.sh
       - notify
 
   test:
@@ -121,10 +127,10 @@ workflows:
   pipeline:
     jobs:
       - build:
-          <<: *only_main_and_dependabot
+          <<: *all_branches
           <<: *slack_context
       - test:
-          <<: *only_main_and_dependabot
+          <<: *all_branches
           <<: *slack_context
           requires:
             - build

@@ -45,7 +45,7 @@ variable "include_route53_zone_association" {
 variable "private_zone_id" {
   description = "The ID of the private Route 53 zone."
   type = string
-  default = null
+  default = ""
 }
 
 variable "include_nat_gateways" {

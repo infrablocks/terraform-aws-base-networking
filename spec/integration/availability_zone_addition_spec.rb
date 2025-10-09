@@ -95,11 +95,13 @@ describe 'availability zone addition' do
 
     # Initialize and apply
     Dir.chdir(test_dir) do
-      system('terraform init', out: File::NULL, err: File::NULL)
-      system('terraform apply -auto-approve', out: File::NULL, err: File::NULL)
+      terraform = terraform_exe('../../../../')
+
+      system("#{terraform} init", out: File::NULL, err: File::NULL)
+      system("#{terraform} apply -auto-approve", out: File::NULL, err: File::NULL)
 
       # Get the state
-      state_output = `terraform show -json`
+      state_output = `#{terraform} show -json`
       JSON.parse(state_output)
     end
 
@@ -112,17 +114,24 @@ describe 'availability zone addition' do
     File.write("#{test_dir}/main.tf",
                generate_terraform_config(availability_zones))
 
+    terraform = terraform_exe('../../../../')
+
     # Run plan and capture output
     Dir.chdir(test_dir) do
-      `terraform plan -out=tfplan -json`
-      `terraform show -json tfplan`
+      `#{terraform} plan -out=tfplan -json`
+      `#{terraform} show -json tfplan > tfplan.json`
+      `cat tfplan.json`
     end
+  end
+
+  def terraform_exe(root_dir)
+    "#{root_dir}vendor/terraform/bin/terraform"
   end
 
   def generate_terraform_config(availability_zones)
     <<~HCL
       module "base_networking" {
-        source = "../../../"
+        source = "../../../../"
 
         vpc_cidr              = "#{vpc_cidr}"
         region                = "#{region}"
