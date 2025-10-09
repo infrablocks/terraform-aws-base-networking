@@ -14,7 +14,7 @@ describe 'public' do
     var(role: :root, name: 'vpc_cidr')
   end
   let(:availability_zones) do
-    var(role: :root, name: 'availability_zones')
+    var(role: :root, name: 'availability_zones').keys
   end
 
   describe 'subnets' do

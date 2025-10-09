@@ -144,13 +144,16 @@ describe 'availability zone addition' do
   end
 
   def generate_terraform_config(availability_zones)
+    azs_map = availability_zones.map { |az| "\"#{az}\" = {}" }.join("\n    ")
     <<~HCL
       module "base_networking" {
         source = "../../../../"
 
         vpc_cidr              = "#{vpc_cidr}"
         region                = "#{region}"
-        availability_zones    = #{availability_zones.inspect}
+        availability_zones    = {
+    #{azs_map}
+  }
         component             = "#{component}"
         deployment_identifier = "#{deployment_identifier}"
       }

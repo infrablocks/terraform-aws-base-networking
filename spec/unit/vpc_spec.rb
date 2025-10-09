@@ -13,7 +13,7 @@ describe 'VPC' do
     var(role: :root, name: 'vpc_cidr')
   end
   let(:availability_zones) do
-    var(role: :root, name: 'availability_zones')
+    var(role: :root, name: 'availability_zones').keys
   end
   let(:private_zone_id) do
     output(role: :prerequisites, name: 'private_zone_id')

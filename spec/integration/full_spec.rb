@@ -15,7 +15,7 @@ describe 'full example' do
     var(role: :full, name: 'domain_name')
   end
   let(:availability_zones) do
-    var(role: :full, name: 'availability_zones')
+    output(role: :full, name: 'availability_zones')
   end
   let(:vpc_cidr) do
     var(role: :full, name: 'vpc_cidr')

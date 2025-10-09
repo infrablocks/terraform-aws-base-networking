@@ -10,7 +10,7 @@ describe 'NAT gateways' do
     var(role: :root, name: 'deployment_identifier')
   end
   let(:availability_zones) do
-    var(role: :root, name: 'availability_zones')
+    var(role: :root, name: 'availability_zones').keys
   end
 
   describe 'by default' do

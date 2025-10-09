@@ -7,8 +7,11 @@ variable "region" {
   description = "The region into which to deploy the VPC."
 }
 variable "availability_zones" {
-  type = list(string)
-  description = "The availability zones for which to add subnets."
+  type = map(object({
+    cidr_public  = optional(string)
+    cidr_private = optional(string)
+  }))
+  description = "Map of availability zones to optional CIDR overrides. Keys are AZ names (e.g., 'us-east-1a'). If cidr_public or cidr_private are not provided, they will be calculated automatically using cidrsubnet."
 }
 
 variable "component" {
