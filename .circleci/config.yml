@@ -56,9 +56,7 @@ commands:
                 template: SLACK_SUCCESS_NOTIFICATION
       - when:
           condition:
-            matches:
-              pattern: "^(?!dependabot).*"
-              value: << pipeline.git.branch >>
+            equal: [ main, << pipeline.git.branch >> ]
           steps:
             - slack/notify:
                 event: fail
