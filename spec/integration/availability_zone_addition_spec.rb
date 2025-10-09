@@ -38,12 +38,11 @@ describe 'availability zone addition' do
 
       # Find any destroy actions for our existing resources
       destroyed_resources = resource_changes.select do |change|
-        change_before_id = change['change']['before']['id']
         change['change']['actions'].include?('delete') &&
-          (initial_public_subnet_ids.values.include?(change_before_id) ||
-           initial_private_subnet_ids.values.include?(change_before_id) ||
-           initial_nat_gateway_ids.values.include?(change_before_id) ||
-           initial_eip_ids.values.include?(change_before_id))
+          (initial_public_subnet_ids.values.include?(change['change']['before']['id']) ||
+           initial_private_subnet_ids.values.include?(change['change']['before']['id']) ||
+           initial_nat_gateway_ids.values.include?(change['change']['before']['id']) ||
+           initial_eip_ids.values.include?(change['change']['before']['id']))
       end
 
       # Assert no existing resources are being destroyed
@@ -142,6 +141,7 @@ describe 'availability zone addition' do
 
       provider "aws" {
         region = "#{region}"
+        version = "3.29"
       }
     HCL
   end
