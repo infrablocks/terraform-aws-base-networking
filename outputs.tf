@@ -20,37 +20,37 @@ output "number_of_availability_zones" {
 
 output "public_subnet_ids" {
   description = "The IDs of the public subnets."
-  value = aws_subnet.public.*.id
+  value = [for az in var.availability_zones : aws_subnet.public[az].id]
 }
 
 output "public_subnet_cidr_blocks" {
   description = "The CIDRs of the public subnets."
-  value = aws_subnet.public.*.cidr_block
+  value = [for az in var.availability_zones : aws_subnet.public[az].cidr_block]
 }
 
 output "public_route_table_ids" {
   description = "The IDs of the public route tables."
-  value = aws_route_table.public.*.id
+  value = [for az in var.availability_zones : aws_route_table.public[az].id]
 }
 
 output "private_subnet_ids" {
   description = "The IDs of the private subnets."
-  value = aws_subnet.private.*.id
+  value = [for az in var.availability_zones : aws_subnet.private[az].id]
 }
 
 output "private_subnet_cidr_blocks" {
   description = "The CIDRs of the private subnets."
-  value = aws_subnet.private.*.cidr_block
+  value = [for az in var.availability_zones : aws_subnet.private[az].cidr_block]
 }
 
 output "private_route_table_ids" {
   description = "The IDs of the private route tables."
-  value = aws_route_table.private.*.id
+  value = [for az in var.availability_zones : aws_route_table.private[az].id]
 }
 
 output "nat_public_ips" {
   description = "The EIPs attached to the NAT gateways."
-  value = aws_eip.nat.*.public_ip
+  value = local.include_nat_gateways == "yes" ? [for az in var.availability_zones : aws_eip.nat[az].public_ip] : []
 }
 
 output "internet_gateway_id" {
