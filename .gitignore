@@ -34,3 +34,6 @@ state/
 *.tfplan
 *.tfstate
 *.tfstate.backup
+
+# Test run files
+spec/integration/test_runs/**/*

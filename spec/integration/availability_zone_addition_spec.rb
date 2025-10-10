@@ -18,6 +18,18 @@ describe 'availability zone addition' do
   let(:region) { 'eu-west-1' }
 
   describe 'adding a new availability zone' do
+    let(:test_dir) { @test_dir }
+
+    after(:each) do
+      # Cleanup: destroy all resources created during the test
+      if @test_dir && Dir.exist?(@test_dir)
+        terraform_exec = from_root_directory("vendor/terraform/bin/terraform")
+        Dir.chdir(@test_dir) do
+          system("#{terraform_exec} destroy -auto-approve")
+        end
+      end
+    end
+
     it 'does not destroy existing subnets when adding a new availability zone' do
       # Step 1: Apply with initial set of availability zones
       initial_state = apply_and_get_state(initial_availability_zones)
@@ -53,7 +65,7 @@ describe 'availability zone addition' do
       # Check that only new resources are being created
       created_resources = resource_changes.select do |change|
         change['change']['actions'].include?('create') &&
-          %w[aws_subnet aws_route_table aws_route_table_association aws_nat_gateway aws_eip].include?(change['type'])
+          %w[aws_subnet aws_route_table aws_route_table_association aws_route aws_nat_gateway aws_eip].include?(change['type'])
       end
 
       # We expect exactly 1 new public subnet, 1 new private subnet,
@@ -82,24 +94,27 @@ describe 'availability zone addition' do
   private
 
   def apply_and_get_state(availability_zones)
+    terraform_exec = from_root_directory("vendor/terraform/bin/terraform")
     # Create a temporary directory for this test run
-    test_dir = "spec/integration/test_runs/#{Time.now.to_i}"
-    FileUtils.mkdir_p(test_dir)
+    @test_dir = "spec/integration/test_runs/#{Time.now.to_i}"
+    FileUtils.mkdir_p(@test_dir)
 
     # Write the terraform configuration
-    File.write("#{test_dir}/main.tf", generate_terraform_config(availability_zones))
+    File.write("#{@test_dir}/main.tf", generate_terraform_config(availability_zones))
 
     # Initialize and apply
-    Dir.chdir(test_dir) do
-      system('terraform init', out: File::NULL, err: File::NULL)
-      system('terraform apply -auto-approve', out: File::NULL, err: File::NULL)
+    Dir.chdir(@test_dir) do
+      init_result = system("#{terraform_exec} init")
+      raise "Terraform init failed" unless init_result
 
-      # Get the state
-      state_output = `terraform show -json`
-      JSON.parse(state_output)
+      apply_result = system("#{terraform_exec} apply -auto-approve")
+      raise "Terraform apply failed" unless apply_result
+
+      # Get the state - properly write to file
+      state_json = `#{terraform_exec} show -json`
+      File.write("initialstate.json", state_json)
+      JSON.parse(state_json)
     end
-  ensure
-    # Cleanup is handled by the test framework
   end
 
   def plan_with_azs(availability_zones)
@@ -107,29 +122,46 @@ describe 'availability zone addition' do
     test_dir = Dir.glob('spec/integration/test_runs/*').last
     File.write("#{test_dir}/main.tf", generate_terraform_config(availability_zones))
 
+    terraform_exec = from_root_directory("vendor/terraform/bin/terraform")
+
     # Run plan and capture output
     Dir.chdir(test_dir) do
-      `terraform plan -out=tfplan -json`
-      `terraform show -json tfplan`
+      `#{terraform_exec} plan -out=tfplan -json`
+      `#{terraform_exec} show -json tfplan > tfplan.json`
+      `cat tfplan.json`
     end
   end
 
   def generate_terraform_config(availability_zones)
     <<~HCL
-      module "base_networking" {
-        source = "../../../"
-
-        vpc_cidr              = "#{vpc_cidr}"
-        region                = "#{region}"
-        availability_zones    = #{availability_zones.inspect}
-        component             = "#{component}"
-        deployment_identifier = "#{deployment_identifier}"
+      terraform {
+        required_providers {
+          aws = {
+            source  = "hashicorp/aws"
+            version = "~> 4.0"
+          }
+        }
       }
 
       provider "aws" {
         region = "#{region}"
       }
+
+      module "base_networking" {
+        source = "#{from_root_directory("")}"
+
+        vpc_cidr                         = "#{vpc_cidr}"
+        region                           = "#{region}"
+        availability_zones               = #{availability_zones.inspect}
+        component                        = "#{component}"
+        deployment_identifier            = "#{deployment_identifier}"
+        include_route53_zone_association = "no"
+      }
     HCL
+  end
+
+  def from_root_directory(dir)
+    return "../../../../#{dir}"
   end
 
   def get_resource_ids(state, resource_type, resource_name)
