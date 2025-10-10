@@ -1,27 +1,27 @@
 resource "aws_eip" "nat" {
-  for_each = local.include_nat_gateways == "yes" ? toset(var.availability_zones) : toset([])
+  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
 
   vpc = true
 
   tags = {
-    Name = "eip-nat-${var.component}-${var.deployment_identifier}-${each.value}"
+    Name = "eip-nat-${var.component}-${var.deployment_identifier}-${element(var.availability_zones, count.index)}"
     Component = var.component
     DeploymentIdentifier = var.deployment_identifier
   }
 }
 
 resource "aws_nat_gateway" "base" {
-  for_each = local.include_nat_gateways == "yes" ? toset(var.availability_zones) : toset([])
+  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
 
-  allocation_id = aws_eip.nat[each.value].id
-  subnet_id = aws_subnet.public[each.value].id
+  allocation_id = element(aws_eip.nat.*.id, count.index)
+  subnet_id = element(aws_subnet.public.*.id, count.index)
 
   depends_on = [
     aws_internet_gateway.base_igw
   ]
 
   tags = {
-    Name = "nat-${var.component}-${var.deployment_identifier}-${each.value}"
+    Name = "nat-${var.component}-${var.deployment_identifier}-${element(var.availability_zones, count.index)}"
     Component = var.component
     DeploymentIdentifier = var.deployment_identifier
   }
