@@ -52,7 +52,7 @@ variable "public_subnets_offset" {
 variable "private_subnets_offset" {
   description = "The number of /24s to offset the private subnets in the VPC CIDR."
   type        = number
-  default     = 0
+  default     = 128
 }
 
 variable "include_route53_zone_association" {

@@ -19,7 +19,7 @@ locals {
     for idx, az in var.availability_zones : {
       zone                = az
       public_subnet_cidr  = cidrsubnet(var.vpc_cidr, 8, idx + local.public_subnets_offset)
-      private_subnet_cidr = cidrsubnet(var.vpc_cidr, 8, idx + 128 + local.private_subnets_offset)
+      private_subnet_cidr = cidrsubnet(var.vpc_cidr, 8, idx + local.private_subnets_offset)
     }
   ]
 
