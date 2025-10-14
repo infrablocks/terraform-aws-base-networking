@@ -4,9 +4,9 @@ module "base_networking" {
   component             = var.component
   deployment_identifier = var.deployment_identifier
 
-  region = var.region
+  region             = var.region
   availability_zones = var.availability_zones
-  vpc_cidr = var.vpc_cidr
+  vpc_cidr           = var.vpc_cidr
 
   dependencies = ["other_vpc_1", "other_vpc_2"]
 

@@ -8,16 +8,16 @@ variable "component" {}
 variable "deployment_identifier" {}
 
 variable "public_subnets_offset" {
-  type = number
+  type    = number
   default = null
 }
 variable "private_subnets_offset" {
-  type = number
+  type    = number
   default = null
 }
 
 variable "dependencies" {
-  type = list(string)
+  type    = list(string)
   default = null
 }
 

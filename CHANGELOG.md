@@ -1,5 +1,53 @@
 ## Unreleased
 
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* `for_each` is used instead of `count` for creating resources for each 
+  availability zone, so the availability zone will be used as the resource key, 
+  not an index. 
+
+  As a consequence, if resources have been created with a 
+  previous version of this module, they will need to be `moved` to avoid them
+  being destroyed and recreated.
+
+  e.g.
+
+  ```terraform
+     moved {
+       from = module.base-network.aws_subnet.public[0]
+       to   = module.base-network.aws_subnet.public["eu-west-1a"]
+     }
+  
+     moved {
+       from = module.base-network.aws_subnet.private[0]
+       to   = module.base-network.aws_subnet.private["eu-west-1a"]
+     }
+  
+     # etc..
+  ```
+
+
+* The default value for the `private_subnets_offset` variable has been changed
+  from 0 to 128.  This means that if the offsets are not provided, there will
+  be sufficient space between the private and public CIDR blocks such that new 
+  availability_zones can be added without needing to destroy existing private 
+  subnets.
+
+  **NB**. If resources were created with a previous module version and the 
+  `private_subnets_offset` variable wasn't previously supplied, then the 
+  variable will need to be explicitly set to `0` to ensure that the private 
+  subnet CIDR blocks are calculated to the same values that they previously had.
+
+ENHANCEMENTS
+
+* As an alternative to the `availability_zones` variable, an
+  `availability_zone_configuration` variable is also supported, which takes a 
+  list of objects with the keys `zone`, `public_subnet_cidr` and
+  `private_subnet_cidr`. This can be useful in cases where a new availability
+  zone is being added, but inference of the CIDR blocks could result in existing
+  subnets being destroyed and recreated, in which case the existing public and 
+  private subnet CIDRs can be explicitly supplied to prevent this. 
+
 ## 5.1.0 (13th Feb 2023)
 
 ENHANCEMENTS
