@@ -3,9 +3,6 @@
 require 'spec_helper'
 require 'json'
 
-# TODO
-# extract function for executing terraform
-
 INITIAL_AVAILABILITY_ZONES = %w[eu-west-1a eu-west-1b].freeze
 UPDATED_AVAILABILITY_ZONES = %w[eu-west-1a eu-west-1b eu-west-1c].freeze
 
