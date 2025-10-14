@@ -33,6 +33,11 @@ BACKWARDS INCOMPATIBILITIES / NOTES:
   availability_zones can be added without needing to destroy existing private 
   subnets.
 
+  **NB**. If resources were created with a previous module version and the 
+  `private_subnets_offset` variable wasn't previously supplied, then the 
+  variable will need to be explicitly set to `0` to ensure that the private 
+  subnet CIDR blocks are calculated to the same values that they previously had.
+
 ENHANCEMENTS
 
 * As an alternative to the `availability_zones` variable, an
