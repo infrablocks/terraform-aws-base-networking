@@ -1,6 +1,18 @@
-## Unreleased
+## 6.0.0 (12th May 2026)
+
+ENHANCEMENTS:
+
+* The `aws_eip.nat` resource now uses `domain = "vpc"` instead of the
+  deprecated `vpc = true` argument. This allows the module to be used with
+  AWS provider v6, which removes `vpc = true` entirely. The minimum AWS
+  provider version has been raised to `>= 4.0` accordingly (`domain` was
+  introduced in v4).
 
 BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* The minimum supported AWS provider version is now `>= 4.0` (previously
+  `>= 3.29`). Consumers still on AWS provider v3 will need to upgrade before
+  adopting this version.
 
 * `for_each` is used instead of `count` for creating resources for each 
   availability zone, so the availability zone will be used as the resource key, 

@@ -1,7 +1,7 @@
 resource "aws_eip" "nat" {
   for_each = local.include_nat_gateways == "yes" ? local.az_map : {}
 
-  vpc = true
+  domain = "vpc"
 
   tags = {
     Name                 = "eip-nat-${var.component}-${var.deployment_identifier}-${each.value.zone}"
