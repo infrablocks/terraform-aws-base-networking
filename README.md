@@ -80,7 +80,7 @@ for more details.
 ### Compatibility
 
 This module is compatible with Terraform versions greater than or equal to 
-Terraform 1.0 and Terraform AWS provider versions greater than or equal to 3.27.
+Terraform 1.0 and Terraform AWS provider versions greater than or equal to 5.0.
 
 ### Required Permissions
 
