@@ -2,7 +2,7 @@ Terraform AWS Base Networking
 =============================
 
 [![Version](https://img.shields.io/github/v/tag/infrablocks/terraform-aws-base-networking?label=version&sort=semver)](https://github.com/infrablocks/terraform-aws-base-networking/tags)
-[![Build Pipeline](https://img.shields.io/circleci/build/github/infrablocks/terraform-aws-base-networking/main?label=build-pipeline)](https://app.circleci.com/pipelines/github/infrablocks/terraform-aws-base-networking?filter=all)
+[![Main](https://github.com/infrablocks/terraform-aws-base-networking/actions/workflows/main.yaml/badge.svg)](https://github.com/infrablocks/terraform-aws-base-networking/actions/workflows/main.yaml)
 [![Maintainer](https://img.shields.io/badge/maintainer-go--atomic.io-red)](https://go-atomic.io)
 
 A Terraform module for building a base network in AWS.
@@ -272,16 +272,16 @@ To decrypt the resulting key:
 openssl rsa -in key.pem -out ssl.key
 ```
 
-#### Managing CircleCI keys
+#### Managing CI keys
 
-To encrypt a GPG key for use by CircleCI:
+To encrypt a GPG key for use by CI:
 
 ```shell
 openssl aes-256-cbc \
   -e \
   -md sha1 \
   -in ./config/secrets/ci/gpg.private \
-  -out ./.circleci/gpg.private.enc \
+  -out ./.github/gpg.private.enc \
   -k "<passphrase>"
 ```
 
@@ -291,7 +291,7 @@ To check decryption is working correctly:
 openssl aes-256-cbc \
   -d \
   -md sha1 \
-  -in ./.circleci/gpg.private.enc \
+  -in ./.github/gpg.private.enc \
   -k "<passphrase>"
 ```
 
